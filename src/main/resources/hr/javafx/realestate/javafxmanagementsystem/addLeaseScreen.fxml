@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.realestate.javafxmanagementsystem.controller.AddLeaseAgreementController">
+    <children>
+        <GridPane prefHeight="660.0" prefWidth="924.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="924.0" minWidth="0.0" prefWidth="795.1999756097794" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="924.0" minWidth="10.0" prefWidth="795.1999756097794" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="97.79999694824218" minHeight="10.0" prefHeight="97.79999694824218" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="97.00000610351562" minHeight="10.0" prefHeight="52.80000610351564" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="150.3999938964844" minHeight="0.0" prefHeight="67.99999389648437" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="127.60000305175782" minHeight="10.0" prefHeight="64.60000610351562" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="339.200015258789" minHeight="10.0" prefHeight="48.60000000000002" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="274.99999999999994" minHeight="10.0" prefHeight="257.3999999999999" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <fx:include source="menuBar.fxml" GridPane.columnSpan="2" GridPane.valignment="TOP" />
+                <Label text="Kreiranje ugovora" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                    <font>
+                        <Font size="33.0" />
+                    </font>
+                </Label>
+            <Label text="Ime" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Prezime" GridPane.rowIndex="2">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Mobitel" GridPane.rowIndex="3">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="nameTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="226.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="surnameTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="226.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <TextField fx:id="phoneTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="226.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Label text="Email" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="emailTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="226.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label text="Cijena najma" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label text="Početak najma" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="dateOfContract" prefHeight="26.0" prefWidth="154.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <TextField fx:id="priceTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="154.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#addLeaseAgreement" text="Spremi ugovor" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+            <TableView fx:id="propertyTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+              <columns>
+                <TableColumn fx:id="propertyIdColumn" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="propertyAddressColumn" prefWidth="364.80001068115234" text="Adresa" />
+                  <TableColumn fx:id="propertyCountyColumn" minWidth="0.0" prefWidth="322.3999938964844" text="Županija" />
+                  <TableColumn fx:id="propertyAreaColumn" minWidth="0.0" prefWidth="160.79998779296875" text="Površina" />
+              </columns>
+            </TableView>
+            </children>
+        </GridPane>
+    </children>
+</VBox>

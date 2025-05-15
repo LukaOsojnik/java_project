@@ -1,0 +1,4 @@
+student;user
+264c8c381bf16c982a4e59b0dd4c6f7808c51a05f64c35db42cc78a2a72875bb
+profesor;admin
+48a8d9ca65d4ffed5d24d09cde13ef76320e7d4ebf468bcfcb5c4a17f87785a9

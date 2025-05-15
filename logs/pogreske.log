@@ -1,0 +1,13 @@
+2025-02-11 14:44:07,054 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [AddressRepositoryDatabase.java:35] Pogrešno spremanje adrese u repozitoriju.
+2025-02-18 10:55:07,908 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [LeaseRepositoryDatabase.java:48] Pogreška kod čitanja ugovora iz baze podataka.
+2025-02-18 10:56:29,508 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [LeaseRepositoryDatabase.java:48] Pogreška kod čitanja ugovora iz baze podataka.
+2025-02-18 12:28:51,781 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [LeaseRepositoryDatabase.java:48] Pogreška kod čitanja ugovora iz baze podataka.
+2025-04-30 12:56:38,008 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [LeaseRepositoryDatabase.java:48] Pogreška kod čitanja ugovora iz baze podataka.
+2025-05-14 11:53:46,166 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-14 11:59:37,860 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-14 12:02:53,398 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-14 12:04:47,175 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-14 12:05:09,637 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-14 12:05:49,879 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-14 14:40:52,078 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-14 14:40:54,270 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
