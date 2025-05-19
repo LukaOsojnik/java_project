@@ -20,7 +20,7 @@ import java.util.List;
 public class SearchPropertyController {
 
     @FXML private TextField areaTextField;
-    @FXML private TextField addressTextField;
+    @FXML private TextField priceTextField;
     @FXML private ComboBox<County> countyComboBox;
     @FXML private ComboBox<PropertyType> propertyTypeComboBox;
     @FXML private ComboBox<PropertyStatus> propertyStatusComboBox;
@@ -31,8 +31,8 @@ public class SearchPropertyController {
     @FXML private TableColumn<Property, String> propertyCountyColumn;
     @FXML private TableColumn<Property, String> propertyPurposeColumn;
     @FXML private TableColumn<Property, String> propertyTypeColumn;
-    @FXML private TableColumn<Property, String> propertyAddressColumn;
     @FXML private TableColumn<Property, String> propertyStatusColumn;
+    @FXML private TableColumn<Property, String> propertyPriceColumn;
 
 
     public void initialize(){
@@ -45,14 +45,14 @@ public class SearchPropertyController {
                 new SimpleStringProperty(celldata.getValue().getId().toString()));
         propertyAreaColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getMetersSquared().toString()));
+        propertyPriceColumn.setCellValueFactory(celldata ->
+                new SimpleStringProperty(celldata.getValue().getPrice().toString()));
         propertyCountyColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getAddress().getCounty().toString()));
         propertyPurposeColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getPropertyPurpose().toString()));
         propertyTypeColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getPropertyType().toString()));
-        propertyAddressColumn.setCellValueFactory(celldata ->
-                new SimpleStringProperty(celldata.getValue().getAddress().toString()));
         propertyStatusColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getPropertyStatus().toString()));
 
@@ -63,7 +63,7 @@ public class SearchPropertyController {
         List<Property> listProperty = prd.findAll();
 
         String area = areaTextField.getText();
-        String address = addressTextField.getText();
+        String price = priceTextField.getText();
         PropertyType type = propertyTypeComboBox.getSelectionModel().getSelectedItem();
         County county = countyComboBox.getSelectionModel().getSelectedItem();
         PropertyStatus status = propertyStatusComboBox.getSelectionModel().getSelectedItem();
@@ -75,9 +75,9 @@ public class SearchPropertyController {
                     .toList();
         }
 
-        if(!address.isEmpty()){
+        if(!price.isEmpty()){
             listProperty = listProperty.stream()
-                    .filter(p -> p.getAddress().toString().toLowerCase().contains(address.toLowerCase()))
+                    .filter(p -> p.getPrice().compareTo(new BigDecimal(price)) < 0)
                     .toList();
         }
         if(type != null){

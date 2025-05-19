@@ -15,26 +15,39 @@ public class Property extends Entity implements Serializable {
 
     private Address address;
     private BigDecimal metersSquared;
+    private BigDecimal price;
     private PropertyType propertyType;
     private PropertyPurpose propertyPurpose;
     private PropertyStatus propertyStatus;
 
-    public Property(BigDecimal metersSquared, Address address, PropertyType propertyType, PropertyPurpose propertyPurpose) {
+    public Property(BigDecimal metersSquared, BigDecimal price, Address address, PropertyType propertyType, PropertyPurpose propertyPurpose) {
         this.propertyType = propertyType;
         this.address = address;
         this.metersSquared = metersSquared;
+        this.price = price;
         this.propertyPurpose = propertyPurpose;
         this.propertyStatus = PropertyStatus.AVAILABLE;
     }
 
-    public Property(Long id, BigDecimal metersSquared, Address address, PropertyType propertyType, PropertyPurpose propertyPurpose) {
+    public Property(Long id, BigDecimal metersSquared, BigDecimal price, Address address, PropertyType propertyType, PropertyPurpose propertyPurpose) {
         super(id);
         this.propertyType = propertyType;
         this.address = address;
         this.metersSquared = metersSquared;
+        this.price = price;
         this.propertyPurpose = propertyPurpose;
         this.propertyStatus = PropertyStatus.AVAILABLE;
     }
+    public Property(Long id, BigDecimal metersSquared, BigDecimal price, Address address, PropertyStatus propertyStatus, PropertyType propertyType, PropertyPurpose propertyPurpose) {
+        super(id);
+        this.propertyType = propertyType;
+        this.address = address;
+        this.metersSquared = metersSquared;
+        this.price = price;
+        this.propertyPurpose = propertyPurpose;
+        this.propertyStatus = propertyStatus;
+    }
+
 
     public PropertyType getPropertyType() {
         return propertyType;
@@ -74,5 +87,17 @@ public class Property extends Entity implements Serializable {
 
     public void setPropertyStatus() {
         propertyStatus = PropertyStatus.NOT_AVAILABLE;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setPropertyStatus(PropertyStatus propertyStatus) {
+        this.propertyStatus = propertyStatus;
     }
 }

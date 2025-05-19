@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 
 public class AddPropertyController {
     @FXML private TextField propertyAreaTextField;
+    @FXML private TextField priceTextField;
     @FXML private ComboBox<PropertyType> propertyTypeComboBox;
     @FXML private ComboBox<PropertyPurpose> propertyPurposeComboBox;
 
@@ -43,6 +44,8 @@ public class AddPropertyController {
                 false, Validator.createEmptyValidator("Odabir županije je obvezan!"));
         validationSupport.registerValidator(propertyAreaTextField,
                 false, Validator.createEmptyValidator("Unos površine je obvezan!"));
+        validationSupport.registerValidator(priceTextField,
+                false, Validator.createEmptyValidator("Unos cijene je obvezan!"));
         validationSupport.registerValidator(propertyTypeComboBox,
                 false, Validator.createEmptyValidator("Odabir tipa imovine je obvezan!"));
         validationSupport.registerValidator(propertyPurposeComboBox,
@@ -52,7 +55,7 @@ public class AddPropertyController {
     }
     public void saveAddress(){
         Boolean isValid = validationSupport.isInvalid();
-        if(!Boolean.TRUE.equals(isValid)) {
+        if(Boolean.TRUE.equals(isValid)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pogreške kod unosa nove imovine");
             alert.setHeaderText("Imovina nije spremljena.");
@@ -71,13 +74,14 @@ public class AddPropertyController {
             PropertyType propertyType = propertyTypeComboBox.getSelectionModel().getSelectedItem();
             PropertyPurpose propertyPurpose = propertyPurposeComboBox.getSelectionModel().getSelectedItem();
             String area = propertyAreaTextField.getText();
+            String price = priceTextField.getText();
 
             Address address = new Address(street, number, city, county);
             addressRepositoryDatabase.save(address);
 
             Address propertyAddress = addressRepositoryDatabase.returnLast();
 
-            Property property = new Property(new BigDecimal(area), propertyAddress, propertyType, propertyPurpose);
+            Property property = new Property(new BigDecimal(area), new BigDecimal(price), propertyAddress, propertyType, propertyPurpose);
             propertyRepositoryDatabase.save(property);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -93,6 +97,7 @@ public class AddPropertyController {
         cityTextField.clear();
         numberTextField.clear();
         propertyAreaTextField.clear();
+        priceTextField.clear();
         streetTextField.clear();
         countyComboBox.getSelectionModel().clearSelection();
         propertyPurposeComboBox.getSelectionModel().clearSelection();

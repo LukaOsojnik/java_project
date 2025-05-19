@@ -129,6 +129,15 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
+                  <Label prefHeight="24.0" prefWidth="106.0" text="Cijena" GridPane.halignment="LEFT">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <TextField fx:id="priceTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="161.0" GridPane.halignment="CENTER" />
                     </children>
                 </GridPane>
             <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="86.0" prefWidth="923.0" GridPane.valignment="BOTTOM">

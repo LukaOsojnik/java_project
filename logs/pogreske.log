@@ -11,3 +11,9 @@
 2025-05-14 12:05:49,879 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
 2025-05-14 14:40:52,078 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
 2025-05-14 14:40:54,270 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [PropertyRepositoryDatabase.java:52] Pogreška u čitanju imovine iz baze.
+2025-05-19 15:48:34,630 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
+2025-05-19 15:56:02,697 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
+2025-05-19 16:03:04,919 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
+2025-05-19 16:48:18,154 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
+2025-05-19 16:54:24,077 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
+2025-05-19 16:59:56,327 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.

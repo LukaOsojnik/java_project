@@ -110,7 +110,7 @@
                               <Insets right="20.0" />
                            </GridPane.margin>
                         </Button>
-                        <Label text="Adresa" GridPane.columnIndex="1">
+                        <Label text="Cijena" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -118,7 +118,7 @@
                               <Insets left="20.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="addressTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="153.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <TextField fx:id="priceTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="153.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                      </children>
                   </GridPane>
                     </children>
@@ -127,11 +127,11 @@
                     <columns>
                         <TableColumn fx:id="propertyIdColumn" prefWidth="68.00003355741501" text="ID" />
                         <TableColumn fx:id="propertyAreaColumn" prefWidth="78.40005493164062" text="Površina" />
-                  <TableColumn fx:id="propertyAddressColumn" prefWidth="200.80003356933594" text="Adresa" />
-                        <TableColumn fx:id="propertyCountyColumn" prefWidth="236.7999267578125" text="Županija" />
-                        <TableColumn fx:id="propertyTypeColumn" minWidth="0.0" prefWidth="105.5999755859375" text="Tip objekta" />
-                  <TableColumn fx:id="propertyPurposeColumn" minWidth="4.7999267578125" prefWidth="104.800048828125" text="Namjena" />
-                  <TableColumn fx:id="propertyStatusColumn" prefWidth="114.39990234375" text="Status" />
+                  <TableColumn fx:id="propertyPriceColumn" prefWidth="143.1999969482422" text="Cijena" />
+                        <TableColumn fx:id="propertyTypeColumn" minWidth="0.0" prefWidth="143.20001220703125" text="Tip objekta" />
+                        <TableColumn fx:id="propertyCountyColumn" prefWidth="199.20001220703125" text="Županija" />
+                  <TableColumn fx:id="propertyPurposeColumn" minWidth="4.7999267578125" prefWidth="125.5999755859375" text="Namjena" />
+                  <TableColumn fx:id="propertyStatusColumn" maxWidth="219.20000000000005" prefWidth="151.99993896484375" text="Status" />
                     </columns>
                 </TableView>
             </children>

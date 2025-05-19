@@ -1,5 +1,6 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
+import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyStatus;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
 import hr.javafx.realestate.javafxmanagementsystem.model.Property;
 import hr.javafx.realestate.javafxmanagementsystem.model.Tenant;
@@ -15,7 +16,9 @@ import org.controlsfx.validation.Severity;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -75,6 +78,9 @@ public class AddLeaseAgreementController {
 
         PropertyRepositoryDatabase<Property> propertyRepository = new PropertyRepositoryDatabase<>();
         List<Property> propertyList = propertyRepository.findAll();
+        propertyList = propertyList.stream()
+                .filter(p -> p.getPropertyStatus().equals(PropertyStatus.AVAILABLE))
+                .toList();
         ObservableList<Property> observableList = FXCollections.observableList(propertyList);
         propertyTableView.setItems(observableList);
 
@@ -89,7 +95,7 @@ public class AddLeaseAgreementController {
         });
     }
 
-    public void addLeaseAgreement(){
+    public void addLeaseAgreement() throws SQLException, IOException {
         if(validationSupport.isInvalid() || selectedProperty == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pogreške kod kreiranja novog ugovora!");
@@ -115,6 +121,20 @@ public class AddLeaseAgreementController {
             LeaseAgreement leaseAgreement = new LeaseAgreement(tenant, selectedProperty, new BigDecimal(rentPrice), signingDate);
 
             leaseRepository.save(leaseAgreement);
+            PropertyRepositoryDatabase<Property> prd = new PropertyRepositoryDatabase();
+            prd.changeStatus(selectedProperty);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Uspješno kreiran novi ugovor!");
+            alert.showAndWait();
+
+            PropertyRepositoryDatabase<Property> propertyRepository = new PropertyRepositoryDatabase<>();
+            List<Property> propertyList = propertyRepository.findAll();
+            propertyList = propertyList.stream()
+                    .filter(p -> p.getPropertyStatus().equals(PropertyStatus.AVAILABLE))
+                    .toList();
+            ObservableList<Property> observableList = FXCollections.observableList(propertyList);
+            propertyTableView.setItems(observableList);
 
 
         }
