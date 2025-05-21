@@ -1,37 +1,27 @@
 package hr.javafx.realestate.javafxmanagementsystem.model;
+
+import hr.javafx.realestate.javafxmanagementsystem.DbRepository.InboxRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.DbRepository.LeaseRepositoryDatabase;
+
 import java.time.LocalDate;
 import java.util.List;
 
-public class NotificationService implements Runnable {
-    private List<Tenant> tenants;
+import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.logger;
 
-    public NotificationService(List<Tenant> tenants) {
-        this.tenants = tenants;
+public class NotificationService implements Runnable {
+    private LeaseRepositoryDatabase<LeaseAgreement> leaseRepository;
+    private InboxRepositoryDatabase<InboxMessage> inboxRepository;
+    private boolean isRunning = true;
+
+    public NotificationService() {
+        this.leaseRepository = new LeaseRepositoryDatabase<>();
+        this.inboxRepository = new InboxRepositoryDatabase<>();
     }
 
     @Override
     public void run() {
-        while (true) {
-            for (Tenant tenant : tenants) {
-                if (shouldSendReminder(tenant)) {
-                    sendReminder(tenant);
-                }
-            }
-            try {
-                Thread.sleep(86400000); // Run daily
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
-    private boolean shouldSendReminder(Tenant tenant) {
-        LocalDate today = LocalDate.now();
-        return tenant.equals(today);
-    }
 
-    private void sendReminder(Tenant tenant) {
-        System.out.println("Reminder sent to: " + tenant.getEmail());
-    }
 }
-

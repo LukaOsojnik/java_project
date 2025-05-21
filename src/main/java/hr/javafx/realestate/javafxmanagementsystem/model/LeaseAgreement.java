@@ -61,7 +61,7 @@ public class LeaseAgreement extends Entity{
 
     public void generateAndAddInvoice(){
         LocalDate paymentDueDate = signingDate.plusMonths(tenant.getInvoices().size());
-        Invoice invoice = new Invoice(this, paymentDueDate, rentPrice);
+        Invoice invoice = new Invoice(this, paymentDueDate);
 
         this.tenant.addInvoice(invoice);
     }

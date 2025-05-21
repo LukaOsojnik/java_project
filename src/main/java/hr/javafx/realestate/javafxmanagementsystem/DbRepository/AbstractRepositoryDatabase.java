@@ -49,7 +49,7 @@ public abstract class AbstractRepositoryDatabase<T> {
      * Vraća genericku listu čije podatke uzima iz baze podataka
      * @return
      */
-    public abstract List<T> findAll();
+    public abstract List<T> findAll() throws SQLException, IOException;
 
     /**
      * Prima objekt entity te sprema isti u bazu podataka

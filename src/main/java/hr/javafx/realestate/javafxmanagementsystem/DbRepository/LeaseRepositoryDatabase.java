@@ -2,6 +2,7 @@ package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
+import hr.javafx.realestate.javafxmanagementsystem.model.Invoice;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
 import hr.javafx.realestate.javafxmanagementsystem.model.Property;
 import hr.javafx.realestate.javafxmanagementsystem.model.Tenant;
@@ -19,7 +20,7 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
     @Override
     public T findById(Long id) {
         try(Connection conn = openConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM leasge_agreement WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM lease_agreement WHERE id = ?");
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
@@ -67,7 +68,7 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
 
     @Override
     public void save(T entity) {
-        InvoiceRepositoryDatabase<LeaseAgreement> ird = new InvoiceRepositoryDatabase<>();
+        InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
 
         try(Connection conn = openConnection()){
             PreparedStatement pst = conn.prepareStatement("INSERT INTO LEASE_AGREEMENT(TENANT_ID, " +
@@ -79,7 +80,8 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
             pst.executeUpdate();
 
             LeaseAgreement lease = returnLast();
-            ird.save(lease);
+            Invoice invoice = new Invoice(lease, lease.getSigningDate());
+            ird.save(invoice);
         } catch(IOException | SQLException e) {
             logger.error("Pogreška kod spremanja ugovora u bazu podataka.");
             throw new RepositoryAccessException(e);

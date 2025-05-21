@@ -17,3 +17,7 @@
 2025-05-19 16:48:18,154 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
 2025-05-19 16:54:24,077 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
 2025-05-19 16:59:56,327 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [TenantRepositoryDatabase.java:72] Pogreška kod spremanja najmoprimca.
+2025-05-19 21:38:05,698 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:47] Pogreška kod čitanja poruka iz inboxa.
+2025-05-19 23:23:42,372 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:68] Pogreška kod spremanja poruke u inbox.
+2025-05-19 23:24:33,842 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:68] Pogreška kod spremanja poruke u inbox.
+2025-05-21 21:25:02,122 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:69] Pogreška kod spremanja poruke u inbox.

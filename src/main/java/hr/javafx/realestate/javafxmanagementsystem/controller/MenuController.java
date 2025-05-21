@@ -69,6 +69,15 @@ public class MenuController<T extends LeaseAgreement> {
         RealEsteteApplication.getMainStage().show();
     }
 
+    public void showInboxScreen() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(RealEsteteApplication.class.getResource("inboxScreen.fxml"));
+
+        Scene scene = new Scene(fxmlLoader.load(), 924, 611);
+        RealEsteteApplication.getMainStage().setTitle("Pregled poruka");
+        RealEsteteApplication.getMainStage().setScene(scene);
+        RealEsteteApplication.getMainStage().show();
+    }
+
 
 
 
