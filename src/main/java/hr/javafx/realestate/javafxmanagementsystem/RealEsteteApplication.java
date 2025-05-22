@@ -19,6 +19,7 @@ public class RealEsteteApplication extends Application {
 
         mainStage = stage; // NOSONAR
 
+
         FXMLLoader fxmlLoader = new FXMLLoader(RealEsteteApplication.class.getResource("firstScreen.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 924, 611);
