@@ -1,4 +1,4 @@
-package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
+package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyPurpose;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyStatus;
@@ -19,8 +19,11 @@ import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.
 public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRepositoryDatabase<T>{
     @Override
     public T findById(Long id) throws EmptyRepositoryResultException {
-        try(Connection conn = openConnection()){
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM property WHERE id = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT property.id, " +
+                    "property.address_id, property.meters_squared, property.price, " +
+                    "property.property_status, property.property_type, property.property_purpose " +
+                    "FROM property WHERE id = ?")) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
@@ -39,9 +42,12 @@ public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRep
     public List<T> findAll() {
         List<T> propertyList = new ArrayList<>();
 
-        try(Connection conn = openConnection()) {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM PROPERTY");
+        try(Connection conn = openConnection();
+            Statement stmt = conn.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery("SELECT property.id, property.address_id, " +
+                    "property.meters_squared, property.price, property.property_status, " +
+                    "property.property_type, property.property_purpose FROM PROPERTY");
             while(rs.next()) {
                 Property property = extractFromResultSet(rs);
                 propertyList.add((T) property);
@@ -76,9 +82,10 @@ public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRep
 
     @Override
     public void save(T entity) {
-        try(Connection conn = openConnection()) {
+        try(Connection conn = openConnection();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO PROPERTY(ADDRESS_ID, " +
-                    "METERS_SQUARED, PRICE, PROPERTY_STATUS, PROPERTY_TYPE, PROPERTY_PURPOSE) VALUES (?,?,?,?,?,?)");
+                    "METERS_SQUARED, PRICE, PROPERTY_STATUS, PROPERTY_TYPE, PROPERTY_PURPOSE) " +
+                    "VALUES (?,?,?,?,?,?)")) {
             stmt.setLong(1, entity.getAddress().getId());
             stmt.setBigDecimal(2, entity.getMetersSquared());
             stmt.setBigDecimal(3, entity.getPrice());
@@ -94,8 +101,9 @@ public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRep
     }
 
     public void changeStatus(T property) throws SQLException, IOException {
-        try(Connection conn = openConnection()){
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE PROPERTY SET PROPERTY_STATUS = ? WHERE ID = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE PROPERTY " +
+                    "SET PROPERTY_STATUS = ? WHERE ID = ?")) {
             if(property.getPropertyStatus() == PropertyStatus.AVAILABLE){
                 pstmt.setString(1, PropertyStatus.NOT_AVAILABLE.name());
             } else{

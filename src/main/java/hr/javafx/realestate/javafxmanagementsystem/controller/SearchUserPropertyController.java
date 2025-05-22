@@ -1,8 +1,7 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.PropertyRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.PropertyRepositoryDatabase;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.County;
-import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyStatus;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyType;
 import hr.javafx.realestate.javafxmanagementsystem.model.Property;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,7 +21,7 @@ public class SearchUserPropertyController {
     @FXML private TextField areaTextField;
     @FXML private TextField addressTextField;
     @FXML private ComboBox<County> countyComboBox;
-    @FXML private ComboBox<PropertyType> propertyTypeComboBox;;
+    @FXML private ComboBox<PropertyType> propertyTypeComboBox;
 
     @FXML private TableView<Property> tableView;
     @FXML private TableColumn<Property, String> propertyIdColumn;

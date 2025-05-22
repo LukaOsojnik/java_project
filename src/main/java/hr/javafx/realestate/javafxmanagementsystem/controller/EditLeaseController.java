@@ -2,8 +2,8 @@ package hr.javafx.realestate.javafxmanagementsystem.controller;
 
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
 import hr.javafx.realestate.javafxmanagementsystem.model.Tenant;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.LeaseRepositoryDatabase;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.TenantRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.LeaseRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.TenantRepositoryDatabase;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;

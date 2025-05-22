@@ -1,6 +1,5 @@
-package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
+package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
 
-import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
 import hr.javafx.realestate.javafxmanagementsystem.model.Invoice;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
@@ -18,10 +17,10 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
 
     @Override
     public T findById(Long id) {
-        Object Invoice;
         Invoice invoice;
-        try(Connection conn = openConnection()) {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM invoice WHERE id = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT invoice.id, invoice.lease_id," +
+                    " invoice.due_date, invoice.is_paid, invoice.rent_price FROM invoice WHERE id = ?")) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
@@ -29,10 +28,8 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
                 return (T) invoice;
             }
             throw new RepositoryAccessException("Invoice with id " + id + " not found");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | IOException _) {
+            throw new RepositoryAccessException();
         }
     }
 
@@ -40,9 +37,10 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
     public List<T> findAll() throws SQLException, IOException {
 
         List<T> invoiceList = new ArrayList<>();
-        try(Connection conn = openConnection()){
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from Invoice");
+        try(Connection conn = openConnection();
+            Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("select invoice.id, invoice.lease_id," +
+                    " invoice.due_date, invoice.is_paid, invoice.rent_price from Invoice");
             while(rs.next()){
                 invoiceList.add(extractFromResultSet(rs));
             }
@@ -63,10 +61,10 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
     @Override
     public void save(T entity) {
 
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO invoice(lease_id," +
                     "due_date, is_paid, rent_price)" +
-                    "VAlUES(?, ?, ?, ?)");
+                    "VAlUES(?, ?, ?, ?)")) {
             pstmt.setLong(1, entity.getLease().getId());
             pstmt.setString(2, (entity.getLease().getSigningDate().plusDays(1).toString()));
             pstmt.setString(3, "FALSE");
@@ -79,10 +77,10 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
     }
     public void saveExistingInvoice(T entity) {
 
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO invoice(lease_id," +
                     "due_date, is_paid, rent_price)" +
-                    "VAlUES(?, ?, ?, ?)");
+                    "VAlUES(?, ?, ?, ?)")) {
             pstmt.setLong(1, entity.getLease().getId());
             pstmt.setString(2, (entity.getDueDate().plusDays(1).toString()));
             pstmt.setString(3, "FALSE");
@@ -96,8 +94,8 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
 
 
     public void updateStatus(T entity) throws SQLException, IOException {
-        try(Connection conn = openConnection()){
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE invoice SET is_paid = ? WHERE id = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE invoice SET is_paid = ? WHERE id = ?")) {
             pstmt.setString(1, "TRUE");
             pstmt.setLong(2, entity.getId());
             pstmt.executeUpdate();
@@ -105,8 +103,8 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
     }
     public List<Invoice> nextMonthInvoice() throws SQLException, IOException {
         List<Invoice> invoices = new ArrayList<>();
-        try(Connection conn = openConnection()){
-            Statement stmt = conn.createStatement();
+        try(Connection conn = openConnection();
+            Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT id, lease_id, due_date, is_paid, rent_price " +
                     "FROM invoice i WHERE due_date = (SELECT MAX(due_date) " +
                     "    FROM invoice WHERE lease_id = i.lease_id) AND due_date <= CURRENT_DATE;");

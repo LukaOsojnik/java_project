@@ -1,7 +1,5 @@
 package hr.javafx.realestate.javafxmanagementsystem.model;
 
-import java.rmi.dgc.Lease;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
+package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 
 public abstract class AbstractRepositoryDatabase<T> {
-    private static Path databasePath = Path.of("src/main/java/hr/javafx/realestate/javafxmanagementsystem/DbRepository/dataBase.properties");
+    private static Path databasePath = Path.of("src/main/java/hr/javafx/realestate/javafxmanagementsystem/dbrepository/dataBase.properties");
 
     /**
      * Služi za kreiranje konekcije između programa i baze.

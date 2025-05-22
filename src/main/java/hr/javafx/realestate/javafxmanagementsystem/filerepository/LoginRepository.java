@@ -1,4 +1,4 @@
-package hr.javafx.realestate.javafxmanagementsystem.FileRepository;
+package hr.javafx.realestate.javafxmanagementsystem.filerepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.FailedToAuthenticateException;
@@ -15,7 +15,15 @@ public class LoginRepository {
     private static final String USER_FILE_PATH = "dat/user.txt";
     private static final Integer NUMBER_OF_ROWS_PER_USER = 2;
 
-    public static String[] checkLogIn(String username, String password) throws FailedToAuthenticateException {
+    private final String email;
+    public final String role;
+
+    public LoginRepository(String email, String role){
+        this.email = email;
+        this.role = role;
+    }
+
+    public static LoginRepository checkLogIn(String username, String password) throws FailedToAuthenticateException {
 
         String sha256hex = DigestUtils.sha256Hex(password);
 
@@ -29,16 +37,23 @@ public class LoginRepository {
                 String hashedPassword = fileRows.get(NUMBER_OF_ROWS_PER_USER*recordNumber + 1);
                 if(splitUsername[0].equals(username)){
                     if(hashedPassword.equals(sha256hex)){
-                        return splitUsername;
+                        return new LoginRepository(splitUsername[0], splitUsername[1]);
                     }
                     else {
                         throw new FailedToAuthenticateException();
                     }
                 }
             }
-        } catch(IOException e){
+        } catch(IOException _){
             throw new EmptyRepositoryResultException();
         }
         throw new FailedToAuthenticateException();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public String getRole() {
+        return role;
     }
 }

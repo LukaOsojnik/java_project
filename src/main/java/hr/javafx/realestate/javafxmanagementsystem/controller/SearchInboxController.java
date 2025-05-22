@@ -1,8 +1,9 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.InboxRepositoryDatabase;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.InvoiceRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.InboxRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.InvoiceRepositoryDatabase;
 import hr.javafx.realestate.javafxmanagementsystem.model.*;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,10 +28,11 @@ public class SearchInboxController {
     @FXML private Label selectedInboxLabel = new Label();
 
     private Long selectedInvoiceId;
-    private Timeline refreshTimeline;
+
 
     private static final String INBOX_MESSAGE = "Imate nedospjelu ratu. Molim Vas podmirite račun.";
-    InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase();
+    InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
+    InboxRepositoryDatabase<InboxMessage> inboxRDB = new InboxRepositoryDatabase<>();
 
     public void initialize() {
 
@@ -47,12 +49,11 @@ public class SearchInboxController {
                 if (selected != null) {
                     selectedInvoiceId = selected.getInvoiceId();
                     selectedInboxLabel.setText(ird.findById(selectedInvoiceId).getLease().getTenant().getFullName());
-                    System.out.println("Selected invoice ID: " + selectedInvoiceId);
                 }
             }
         });
 
-        refreshTimeline = new Timeline(
+        Timeline refreshTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     try {
                         refreshInbox();
@@ -62,39 +63,38 @@ public class SearchInboxController {
                 })
         );
 
-        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+        refreshTimeline.setCycleCount(Animation.INDEFINITE);
 
         refreshTimeline.play();
     }
 
     public void refreshInbox() throws SQLException, IOException {
-        InboxRepositoryDatabase<InboxMessage> inrd = new InboxRepositoryDatabase<>();
+
         List<InboxMessage> inboxList;
 
-        inboxList = inrd.findAll();
+        inboxList = inboxRDB.findAll();
         List<Long> inboxInvoiceId = inboxList.stream()
                 .map(InboxMessage::getInvoiceId)
                 .toList();
 
-        InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
         List<Invoice> invoiceList = ird.findAll();
 
         for(Invoice i : invoiceList) {
-            if(!inboxInvoiceId.contains(i.getId()) && !i.isPaid()) {
+            if(!inboxInvoiceId.contains(i.getId()) && !i.isPaid().booleanValue()) {
                 InboxMessage inboxMsg = new InboxMessage(i.getId(), INBOX_MESSAGE, LocalDate.now());
                 inboxList.add(inboxMsg);
-                inrd.save(inboxMsg);
+                inboxRDB.save(inboxMsg);
             }
         }
 
 
-        List<InboxMessage> listOfUnpaid = inrd.checkForUnpaid();
+        List<InboxMessage> listOfUnpaid = inboxRDB.checkForUnpaid();
 
 
 
         for(InboxMessage i : listOfUnpaid) {
-            if(!ird.findById(i.getInvoiceId()).isPaid()) {
-                inrd.save(i);
+            if(!ird.findById(i.getInvoiceId()).isPaid().booleanValue()) {
+                inboxRDB.save(i);
             }
         }
 

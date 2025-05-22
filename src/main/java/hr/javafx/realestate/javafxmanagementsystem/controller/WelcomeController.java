@@ -1,7 +1,8 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
-import hr.javafx.realestate.javafxmanagementsystem.FileRepository.LoginRepository;
+import hr.javafx.realestate.javafxmanagementsystem.filerepository.LoginRepository;
 import hr.javafx.realestate.javafxmanagementsystem.exception.FailedToAuthenticateException;
+import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -15,7 +16,7 @@ public class WelcomeController {
 
     @FXML PasswordField passwordField;
 
-    MenuController menuController = new MenuController();
+    MenuController<LeaseAgreement> menuController = new MenuController<>();
 
     public void logIn() throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
@@ -23,20 +24,18 @@ public class WelcomeController {
         String username = usernameTextField.getText();
         String password = passwordField.getText();
 
-        String[] result;
-
         try{
-            result = LoginRepository.checkLogIn(username, password);
+            LoginRepository logIn = LoginRepository.checkLogIn(username, password);
 
-            if(result[1].equals("user")){
+            if(logIn.getRole().equals("user")){
                 menuController.showSearchUserPropertyScreen();
             }
-            if(result[1].equals("admin")){
+            if(logIn.getRole().equals("admin")){
                 menuController.showSearchPropertyScreen();
             }
 
 
-        } catch(FailedToAuthenticateException e){
+        } catch(FailedToAuthenticateException _){
             stringBuilder.append("Wrong authentication.")
                     .append("\n")
                     .append("Please try again.");

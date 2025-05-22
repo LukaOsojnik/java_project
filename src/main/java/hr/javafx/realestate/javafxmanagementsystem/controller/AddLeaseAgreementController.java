@@ -4,9 +4,9 @@ import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyStatus;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
 import hr.javafx.realestate.javafxmanagementsystem.model.Property;
 import hr.javafx.realestate.javafxmanagementsystem.model.Tenant;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.LeaseRepositoryDatabase;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.PropertyRepositoryDatabase;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.TenantRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.LeaseRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.PropertyRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.TenantRepositoryDatabase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -89,14 +89,13 @@ public class AddLeaseAgreementController {
                 Property selected = propertyTableView.getSelectionModel().getSelectedItem();
                 if (selected != null) {
                     selectedProperty = selected;
-                    System.out.println("Selected property ID: " + selectedProperty.getId().toString());
                 }
             }
         });
     }
 
     public void addLeaseAgreement() throws SQLException, IOException {
-        if(validationSupport.isInvalid() || selectedProperty == null){
+        if(validationSupport.isInvalid().booleanValue() || selectedProperty == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pogreške kod kreiranja novog ugovora!");
             alert.setHeaderText("Ugovor nije spremljen.");
@@ -121,7 +120,7 @@ public class AddLeaseAgreementController {
             LeaseAgreement leaseAgreement = new LeaseAgreement(tenant, selectedProperty, new BigDecimal(rentPrice), signingDate);
 
             leaseRepository.save(leaseAgreement);
-            PropertyRepositoryDatabase<Property> prd = new PropertyRepositoryDatabase();
+            PropertyRepositoryDatabase<Property> prd = new PropertyRepositoryDatabase<>();
             prd.changeStatus(selectedProperty);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

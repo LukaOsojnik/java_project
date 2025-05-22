@@ -1,6 +1,6 @@
 package hr.javafx.realestate.javafxmanagementsystem.exception;
 
-public class FailedToAuthenticateException extends Exception {
+public class FailedToAuthenticateException extends RuntimeException {
     public FailedToAuthenticateException() {
     }
 

@@ -1,4 +1,4 @@
-package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
+package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
@@ -19,8 +19,10 @@ import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.
 public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractRepositoryDatabase<T> {
     @Override
     public T findById(Long id) {
-        try(Connection conn = openConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM lease_agreement WHERE id = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT lease_agreement.id, lease_agreement.tenant_id, " +
+                    " lease_agreement.property_id, lease_agreement.rent_price, lease_agreement.signing_date" +
+                    " FROM lease_agreement WHERE id = ?")) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
@@ -37,9 +39,11 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
     @Override
     public List<T> findAll() {
         List<T> leaseAgreementList = new ArrayList<>();
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM lease_agreement");
+            ResultSet rs = stmt.executeQuery("SELECT lease_agreement.id, lease_agreement.tenant_id, " +
+                    " lease_agreement.property_id, lease_agreement.rent_price, lease_agreement.signing_date " +
+                    "FROM lease_agreement")) {
             while(rs.next()) {
                 leaseAgreementList.add(extractFromResultSet(rs));
             }
@@ -70,9 +74,9 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
     public void save(T entity) {
         InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
 
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             PreparedStatement pst = conn.prepareStatement("INSERT INTO LEASE_AGREEMENT(TENANT_ID, " +
-                    "PROPERTY_ID, RENT_PRICE, SIGNING_DATE) VALUES (?,?,?,?)");
+                    "PROPERTY_ID, RENT_PRICE, SIGNING_DATE) VALUES (?,?,?,?)")) {
             pst.setLong(1, entity.getTenant().getId());
             pst.setLong(2, entity.getProperty().getId());
             pst.setBigDecimal(3, entity.getRentPrice());
@@ -89,9 +93,11 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
     }
 
     public T returnLast() {
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM lease_agreement ORDER BY id DESC LIMIT 1");
+            ResultSet rs = stmt.executeQuery("SELECT lease_agreement.id, lease_agreement.tenant_id, " +
+                    " lease_agreement.property_id, lease_agreement.rent_price, lease_agreement.signing_date " +
+                    "FROM lease_agreement ORDER BY id DESC LIMIT 1")) {
             if(rs.next()){
                 return extractFromResultSet(rs);
             }
@@ -105,10 +111,10 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
     }
 
     public void updateLeaseAgreement(Long leaseId, String rentPrice) {
-        try(Connection connection = openConnection()){
+        try(Connection connection = openConnection();
             PreparedStatement updateMeal =
                     connection.prepareStatement(
-                            "UPDATE LEASE_AGREEMENT SET RENT_PRICE = ? WHERE ID = ?");
+                            "UPDATE LEASE_AGREEMENT SET RENT_PRICE = ? WHERE ID = ?")) {
             updateMeal.setString(1, rentPrice);
             updateMeal.setLong(2, leaseId);
             updateMeal.executeUpdate();

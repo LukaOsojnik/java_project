@@ -1,4 +1,4 @@
-package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
+package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.enum1.County;
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
@@ -17,8 +17,9 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
 
     @Override
     public T findById(Long id) {
-        try(Connection conn = openConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM address WHERE id = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT address.id, address.street_name," +
+                    " address.street_number, address.city, address.county FROM address WHERE id = ?")) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
@@ -34,11 +35,12 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
 
     @Override
     public List<T> findAll() {
-        try(Connection conn = openConnection()){
-            List<T> list = new ArrayList<>();
+        try(Connection conn = openConnection();
+            Statement stmt = conn.createStatement()) {
 
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM ADDRESS");
+            ResultSet rs = stmt.executeQuery("SELECT address.id, address.street_name," +
+                    " address.street_number, address.city, address.county  FROM ADDRESS");
+            List<T> list = new ArrayList<>();
             while(rs.next()){
                 Address address = extractFromResultSet(rs);
                 list.add((T) address);
@@ -66,9 +68,9 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
 
     @Override
     public void save(T entity) {
-        try (Connection connection = openConnection()) {
+        try (Connection connection = openConnection();
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO address(STREET_NAME, STREET_NUMBER," +
-                    "CITY, COUNTY) VALUES(?, ?, ?, ?)");
+                    "CITY, COUNTY) VALUES(?, ?, ?, ?)")) {
             stmt.setString(1, entity.getStreetName());
             stmt.setString(2, entity.getStreetNumber());
             stmt.setString(3, entity.getCity());
@@ -82,9 +84,10 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
     }
 
     public T returnLast(){
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM address ORDER BY id DESC LIMIT 1");
+            ResultSet rs = stmt.executeQuery("SELECT address.id, address.street_name," +
+                    " address.street_number, address.city, address.county  FROM address ORDER BY id DESC LIMIT 1")) {
             if(rs.next()){
                 return extractFromResultSet(rs);
             }

@@ -1,4 +1,4 @@
-package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
+package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
@@ -16,8 +16,9 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
 
     @Override
     public T findById(Long id) {
-        try(Connection conn = openConnection()){
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM tenant WHERE id = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT tenant.id, tenant.first_name, " +
+                    "tenant.last_name, tenant.contact_number, tenant.email FROM tenant WHERE id = ?")) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
@@ -35,9 +36,10 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
     @Override
     public List<T> findAll() {
         List<T> listTenant = new ArrayList<>();
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM tenant");
+            ResultSet rs = stmt.executeQuery("SELECT tenant.id, tenant.first_name, " +
+                    "tenant.last_name, tenant.contact_number, tenant.email FROM tenant")) {
             while(rs.next()){
                 listTenant.add(extractFromResultSet(rs));
             }
@@ -60,9 +62,9 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
 
     @Override
     public void save(T entity) {
-        try(Connection conn = openConnection()) {
+        try(Connection conn = openConnection();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO TENANT(FIRST_NAME, " +
-                    "LAST_NAME, CONTACT_NUMBER, EMAIL) VALUES (?,?,?,?)");
+                    "LAST_NAME, CONTACT_NUMBER, EMAIL) VALUES (?,?,?,?)")) {
             stmt.setString(1, entity.getFirstName());
             stmt.setString(2, entity.getLastName());
             stmt.setString(3, entity.getContactNumber());
@@ -75,9 +77,11 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
     }
 
     public T returnLast(){
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM tenant ORDER BY id DESC LIMIT 1");
+            ResultSet rs = stmt.executeQuery("SELECT tenant.id, tenant.first_name, " +
+                    "tenant.last_name, tenant.contact_number, tenant.email " +
+                    "FROM tenant ORDER BY id DESC LIMIT 1")) {
             if(rs.next()){
                 return extractFromResultSet(rs);
             }
@@ -90,10 +94,10 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
     }
 
     public void updateTenant(Long id, String email, String phoneNumber) {
-        try(Connection connection = openConnection()){
+        try(Connection connection = openConnection();
             PreparedStatement updateTenant =
                     connection.prepareStatement(
-                            "UPDATE TENANT SET CONTACT_NUMBER = ?, EMAIL = ? WHERE ID = ?");
+                            "UPDATE TENANT SET CONTACT_NUMBER = ?, EMAIL = ? WHERE ID = ?")) {
             updateTenant.setString(1, phoneNumber);
             updateTenant.setString(2, email);
             updateTenant.setLong(3, id);

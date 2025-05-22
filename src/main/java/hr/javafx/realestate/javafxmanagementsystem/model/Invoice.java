@@ -1,7 +1,6 @@
 package hr.javafx.realestate.javafxmanagementsystem.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * Služi za kreiranje računa koji se sprema u klasi Tenant

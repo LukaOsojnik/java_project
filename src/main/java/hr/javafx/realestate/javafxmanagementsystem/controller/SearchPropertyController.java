@@ -4,7 +4,7 @@ import hr.javafx.realestate.javafxmanagementsystem.enum1.County;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyStatus;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyType;
 import hr.javafx.realestate.javafxmanagementsystem.model.Property;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.PropertyRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.PropertyRepositoryDatabase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -1,8 +1,8 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.InvoiceRepositoryDatabase;
-import hr.javafx.realestate.javafxmanagementsystem.model.InboxMessage;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.InvoiceRepositoryDatabase;
 import hr.javafx.realestate.javafxmanagementsystem.model.Invoice;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,11 +27,9 @@ public class SearchInvoiceController {
     @FXML private TableColumn<Invoice, String> invoiceAmountColumn;
     @FXML private TableColumn<Invoice, String> invoiceStatusColumn;
 
-    @FXML private Label selectedInvoiceLabel = new Label();;
-    InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase();
+    @FXML private Label selectedInvoiceLabel = new Label();
+    InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
     private Invoice selectedInvoice;
-    private Timeline refreshTimeline;
-
 
     public void initialize() {
         invoiceIdColumn.setCellValueFactory(celldata ->
@@ -51,12 +49,11 @@ public class SearchInvoiceController {
                 if (selected != null) {
                     selectedInvoice = selected;
                     selectedInvoiceLabel.setText("Selected invoice : " + selectedInvoice.getId());
-                    System.out.println("Selected invoice ID: " + selectedInvoice.getId());
                 }
             }
         });
 
-        refreshTimeline = new Timeline(
+        Timeline refreshTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     try {
                         checkInvoice();
@@ -66,7 +63,7 @@ public class SearchInvoiceController {
                 })
         );
 
-        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+        refreshTimeline.setCycleCount(Animation.INDEFINITE);
 
         refreshTimeline.play();
 

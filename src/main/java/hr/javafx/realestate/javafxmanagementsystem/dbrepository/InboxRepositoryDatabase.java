@@ -1,4 +1,4 @@
-package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
+package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
@@ -17,8 +17,9 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
 
     @Override
     public T findById(Long id) {
-        try(Connection conn = openConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM inbox WHERE id = ?");
+        try(Connection conn = openConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT inbox.id, inbox.invoice_id" +
+                    ", inbox.message, inbox.reminder_date FROM inbox WHERE id = ?")){
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
@@ -36,9 +37,10 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
     @Override
     public List<T> findAll() {
         List<T> inboxMessages = new ArrayList<>();
-        try(Connection conn = openConnection()) {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM inbox");
+        try(Connection conn = openConnection();
+            Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("SELECT inbox.id, inbox.invoice_id" +
+                    ", inbox.message, inbox.reminder_date FROM inbox");
             while(rs.next()) {
                 inboxMessages.add(extractFromResultSet(rs));
             }
@@ -58,9 +60,9 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
 
     @Override
     public void save(T entity) {
-        try(Connection conn = openConnection()) {
+        try(Connection conn = openConnection();
             PreparedStatement stmt = conn.prepareStatement(
-                    "INSERT INTO inbox(invoice_id, message, reminder_date) VALUES (?,?,?)");
+                    "INSERT INTO inbox(invoice_id, message, reminder_date) VALUES (?,?,?)")){
             stmt.setLong(1, entity.getInvoiceId());
             stmt.setString(2, entity.getMessage());
             stmt.setString(3, LocalDateTime.now().plusDays(1).toLocalDate().toString());
@@ -71,25 +73,14 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
         }
     }
 
-    public void deleteMessage(Long messageId) {
-        try(Connection conn = openConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM inbox WHERE id = ?");
-            stmt.setLong(1, messageId);
-            stmt.executeUpdate();
-        } catch (SQLException | IOException e) {
-            logger.error("Pogreška kod brisanja poruke.");
-            throw new RepositoryAccessException(e);
-        }
-    }
-
     public List<InboxMessage> checkForUnpaid() throws IOException, SQLException {
         List<InboxMessage> inboxList = new ArrayList<>();
-        try(Connection conn = openConnection()){
+        try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id, invoice_id, message, reminder_date FROM inbox i " +
                     "WHERE reminder_date = (SELECT MAX(reminder_date) FROM inbox " +
                     "    WHERE invoice_id = i.invoice_id) " +
-                    "AND reminder_date <= CURRENT_DATE;");
+                    "AND reminder_date <= CURRENT_DATE;")){
             while(rs.next()) {
                 inboxList.add(extractFromResultSet(rs));
             }

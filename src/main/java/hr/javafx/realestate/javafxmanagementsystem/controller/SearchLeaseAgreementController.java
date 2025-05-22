@@ -1,7 +1,7 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
-import hr.javafx.realestate.javafxmanagementsystem.DbRepository.LeaseRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.dbrepository.LeaseRepositoryDatabase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,7 +46,6 @@ public class SearchLeaseAgreementController {
                 LeaseAgreement selected = leaseAgreementTableView.getSelectionModel().getSelectedItem();
                 if (selected != null) {
                     selectedLeaseAgreement = selected;
-                    System.out.println("Selected property ID: " + selectedLeaseAgreement.getId().toString());
                 }
             }
         });
@@ -70,7 +69,7 @@ public class SearchLeaseAgreementController {
 
     public void editLeaseScreen() throws IOException {
         if(selectedLeaseAgreement != null){
-            MenuController menuController = new MenuController();
+            MenuController<LeaseAgreement> menuController = new MenuController<>();
             menuController.showEditLease(selectedLeaseAgreement);
         }
         else{
