@@ -18,6 +18,11 @@
                 <MenuItem mnemonicParsing="false" onAction="#showAddLeaseScreen" text="Add new" />
             </items>
         </Menu>
+      <Menu mnemonicParsing="false" text="Invoices">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#showInvoiceScreen" text="Show invoices" />
+        </items>
+      </Menu>
       <Menu mnemonicParsing="false" text="Inbox">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#showInboxScreen" text="Show inbox" />

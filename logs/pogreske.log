@@ -21,3 +21,4 @@
 2025-05-19 23:23:42,372 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:68] Pogreška kod spremanja poruke u inbox.
 2025-05-19 23:24:33,842 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:68] Pogreška kod spremanja poruke u inbox.
 2025-05-21 21:25:02,122 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:69] Pogreška kod spremanja poruke u inbox.
+2025-05-21 23:10:20,630 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [InboxRepositoryDatabase.java:47] Pogreška kod čitanja poruka iz inboxa.

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.realestate.javafxmanagementsystem.controller.SearchInvoiceController">
+    <children>
+        <GridPane prefHeight="660.0" prefWidth="924.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="924.0" minWidth="0.0" prefWidth="795.1999756097794" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="56.800009155273436" minHeight="10.0" prefHeight="52.000006103515624" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="108.39999999999999" minHeight="0.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="108.39999999999999" minHeight="0.0" prefHeight="57.39999999999999" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="176.00000000000003" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="428.19999999999993" minHeight="10.0" prefHeight="427.79999999999995" vgrow="SOMETIMES" />
+            </rowConstraints>
+         <children>
+             <fx:include source="menuBar.fxml" GridPane.columnSpan="1" GridPane.valignment="TOP" />
+            <Label text="Invoices" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Label>
+            <TableView fx:id="invoiceTableView" prefHeight="421.0" prefWidth="923.0" GridPane.rowIndex="4">
+              <columns>
+                <TableColumn fx:id="invoiceIdColumn" prefWidth="74.39999544620514" text="ID" />
+                <TableColumn fx:id="invoiceNameAndSurnameColumn" minWidth="0.0" prefWidth="379.99999237060547" text="Name and surname" />
+                  <TableColumn fx:id="invoiceDueDateColumn" prefWidth="219.20010375976562" text="Date" />
+                  <TableColumn fx:id="invoiceAmountColumn" prefWidth="146.39996337890625" text="Amount" />
+                  <TableColumn fx:id="invoiceStatusColumn" prefWidth="101.5999755859375" text="Paid" />
+                  <TableColumn fx:id="invoiceDueDateColumn1" prefWidth="448.0" text="Date" />
+              </columns>
+            </TableView>
+            <Button mnemonicParsing="false" onAction="#checkInvoice" text="Button" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="70.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+        </GridPane>
+    </children>
+</VBox>
