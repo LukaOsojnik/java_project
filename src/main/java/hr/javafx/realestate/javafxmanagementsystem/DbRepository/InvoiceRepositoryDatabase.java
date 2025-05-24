@@ -1,5 +1,6 @@
 package hr.javafx.realestate.javafxmanagementsystem.DbRepository;
 
+import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
 import hr.javafx.realestate.javafxmanagementsystem.model.Invoice;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
@@ -17,7 +18,22 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
 
     @Override
     public T findById(Long id) {
-        return null;
+        Object Invoice;
+        Invoice invoice;
+        try(Connection conn = openConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM invoice WHERE id = ?");
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                invoice = extractFromResultSet(rs);
+                return (T) invoice;
+            }
+            throw new RepositoryAccessException("Invoice with id " + id + " not found");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -79,11 +95,11 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
     }
 
 
-    public void updateStatus(Long id) throws SQLException, IOException {
+    public void updateStatus(T entity) throws SQLException, IOException {
         try(Connection conn = openConnection()){
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE invoice SET status = ? WHERE id = ?");
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE invoice SET is_paid = ? WHERE id = ?");
             pstmt.setString(1, "TRUE");
-            pstmt.setLong(2, id);
+            pstmt.setLong(2, entity.getId());
             pstmt.executeUpdate();
         }
     }

@@ -41,11 +41,19 @@
                   <TableColumn fx:id="invoiceDueDateColumn1" prefWidth="448.0" text="Date" />
               </columns>
             </TableView>
-            <Button mnemonicParsing="false" onAction="#checkInvoice" text="Button" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Button mnemonicParsing="false" onAction="#changeStatus" text="Button" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="70.0" />
                </GridPane.margin>
             </Button>
+            <Label fx:id="selectedInvoiceLabel" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="40.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
         </GridPane>
     </children>

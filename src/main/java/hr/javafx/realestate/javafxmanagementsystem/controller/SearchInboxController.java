@@ -15,7 +15,6 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class SearchInboxController {
@@ -25,10 +24,13 @@ public class SearchInboxController {
     @FXML private TableColumn<InboxMessage, String> creationDateColumn;
     @FXML private TableColumn<InboxMessage, String> messageColumn;
 
-    private static final String INBOX_MESSAGE = "Imate nedospjelu ratu. Molim Vas podmirite račun.";
-    Long selectedInvoiceId;
+    @FXML private Label selectedInboxLabel = new Label();
+
+    private Long selectedInvoiceId;
     private Timeline refreshTimeline;
 
+    private static final String INBOX_MESSAGE = "Imate nedospjelu ratu. Molim Vas podmirite račun.";
+    InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase();
 
     public void initialize() {
 
@@ -39,23 +41,19 @@ public class SearchInboxController {
         creationDateColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getReminderDate().toString()));
 
-        InboxRepositoryDatabase<InboxMessage> ird = new InboxRepositoryDatabase<>();
-        List<InboxMessage> listOfMessages = ird.findAll();
-        ObservableList<InboxMessage> observableList = FXCollections.observableList(listOfMessages);
-        inboxTableView.setItems(observableList);
-
         inboxTableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1) {
                 InboxMessage selected = inboxTableView.getSelectionModel().getSelectedItem();
                 if (selected != null) {
                     selectedInvoiceId = selected.getInvoiceId();
+                    selectedInboxLabel.setText(ird.findById(selectedInvoiceId).getLease().getTenant().getFullName());
                     System.out.println("Selected invoice ID: " + selectedInvoiceId);
                 }
             }
         });
 
         refreshTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(10), event -> {
+                new KeyFrame(Duration.seconds(1), event -> {
                     try {
                         refreshInbox();
                     } catch (SQLException | IOException e) {
@@ -92,11 +90,13 @@ public class SearchInboxController {
 
         List<InboxMessage> listOfUnpaid = inrd.checkForUnpaid();
 
-        for(InboxMessage i : listOfUnpaid) {
-            inrd.save(i);
-        }
 
-        inboxList = inrd.findAll();
+
+        for(InboxMessage i : listOfUnpaid) {
+            if(!ird.findById(i.getInvoiceId()).isPaid()) {
+                inrd.save(i);
+            }
+        }
 
         ObservableList<InboxMessage> observableList = FXCollections.observableList(inboxList);
         inboxTableView.setItems(observableList);
