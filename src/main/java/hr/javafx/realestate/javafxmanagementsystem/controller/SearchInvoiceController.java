@@ -118,7 +118,7 @@ public class SearchInvoiceController {
         try{
             entries = readAllEntries();
 
-        } catch(ReadSerializedException e){
+        } catch(ReadSerializedException _){
             logger.error("Failed to read serialized file.");
         }
         entries.add(new PaidInvoice(invoice, changedInvoice, role, LocalDateTime.now()));

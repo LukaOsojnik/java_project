@@ -72,7 +72,7 @@ public class SearchLeaseAgreementController {
 
         if (selectedLeaseAgreement != null) {
             MenuController<LeaseAgreement> menuController = new MenuController<>();
-            menuController.showEditLease(selectedLeaseAgreement);
+            menuController.showEditLease();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pogreške kod odabira ugovora!");

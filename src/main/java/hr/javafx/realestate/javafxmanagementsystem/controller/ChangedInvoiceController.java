@@ -1,7 +1,6 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
 import hr.javafx.realestate.javafxmanagementsystem.exception.ReadSerializedException;
-import hr.javafx.realestate.javafxmanagementsystem.model.Invoice;
 import hr.javafx.realestate.javafxmanagementsystem.model.PaidInvoice;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

@@ -54,7 +54,7 @@ public class MenuController<T extends LeaseAgreement> {
         RealEsteteApplication.getMainStage().show();
     }
 
-    public void showEditLease(LeaseAgreement entity) throws IOException {
+    public void showEditLease() throws IOException {
         FXMLLoader loader = new FXMLLoader(RealEsteteApplication.class.getResource("editLeaseScreen.fxml"));
 
         Scene scene = new Scene(loader.load(), 924, 611);

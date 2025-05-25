@@ -13,8 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,13 +38,8 @@ public class SearchInboxController {
                 new SimpleStringProperty(celldata.getValue().getReminderDate().toString()));
 
         Timeline refreshTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), event -> {
-                    try {
-                        refreshInbox();
-                    } catch (SQLException | IOException e) {
-                        e.printStackTrace();
-                    }
-                })
+                new KeyFrame(Duration.seconds(1), event ->
+                    refreshInbox())
         );
 
         refreshTimeline.setCycleCount(Animation.INDEFINITE);
@@ -54,7 +47,7 @@ public class SearchInboxController {
         refreshTimeline.play();
     }
 
-    public void refreshInbox() throws SQLException, IOException {
+    public void refreshInbox() {
 
         List<InboxMessage> inboxList;
 

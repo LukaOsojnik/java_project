@@ -19,9 +19,6 @@ public class EditLeaseController {
     String rentPrice;
     private LeaseAgreement lease;
 
-    public void initialize(){
-
-    }
     public void passedData(LeaseAgreement lease){
         this.lease = lease;
 
