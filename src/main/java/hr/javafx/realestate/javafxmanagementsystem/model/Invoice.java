@@ -1,4 +1,5 @@
 package hr.javafx.realestate.javafxmanagementsystem.model;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -6,7 +7,7 @@ import java.time.LocalDate;
  * Služi za kreiranje računa koji se sprema u klasi Tenant
  */
 
-public class Invoice extends Entity {
+public class Invoice extends Entity implements Serializable {
 
     private LeaseAgreement lease;
     private LocalDate dueDate;

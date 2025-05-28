@@ -3,18 +3,19 @@ package hr.javafx.realestate.javafxmanagementsystem.controller;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.County;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyStatus;
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyType;
+import hr.javafx.realestate.javafxmanagementsystem.model.Pair;
 import hr.javafx.realestate.javafxmanagementsystem.model.Property;
 import hr.javafx.realestate.javafxmanagementsystem.dbrepository.PropertyRepositoryDatabase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public class SearchPropertyController {
@@ -34,7 +35,7 @@ public class SearchPropertyController {
     @FXML private TableColumn<Property, String> propertyStatusColumn;
     @FXML private TableColumn<Property, String> propertyPriceColumn;
 
-
+    private static final Logger logger = LoggerFactory.getLogger(SearchPropertyController.class);
     public void initialize(){
 
         countyComboBox.getItems().addAll(County.values());
@@ -55,6 +56,7 @@ public class SearchPropertyController {
                 new SimpleStringProperty(celldata.getValue().getPropertyType().toString()));
         propertyStatusColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getPropertyStatus().toString()));
+
 
     }
     public void filterProperty(){
@@ -100,9 +102,15 @@ public class SearchPropertyController {
         ObservableList<Property> observableList = FXCollections.observableList(listProperty);
         tableView.setItems(observableList);
 
+        Pair<Integer, LocalDate> generic = new Pair<>(listProperty.size(), LocalDate.now());
+
+        logger.info("Broj nekretnina: {} | Vrijeme: {}", generic.getFirst(), generic.getSecond());
+
         propertyTypeComboBox.getSelectionModel().clearSelection();
         countyComboBox.getSelectionModel().clearSelection();
         propertyStatusComboBox.getSelectionModel().clearSelection();
+
+
 
     }
 

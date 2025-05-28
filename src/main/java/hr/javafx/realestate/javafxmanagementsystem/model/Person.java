@@ -1,6 +1,6 @@
 package hr.javafx.realestate.javafxmanagementsystem.model;
 
-public abstract class Person extends Entity{
+public abstract class Person extends Entity implements Contactable{
 
     private String firstName;
     private String lastName;

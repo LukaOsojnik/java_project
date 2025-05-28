@@ -61,7 +61,13 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
         String city = rs.getString("city");
         String county = rs.getString("county");
 
-        Address address = new Address(id, streetName, streetNumber, city, County.valueOf(county));
+        Address address = Address.builder()
+                .id(id)
+                .streetName(streetName)
+                .streetNumber(streetNumber)
+                .city(city)
+                .county(County.valueOf(county))
+                .build();
 
         return (T) address;
     }

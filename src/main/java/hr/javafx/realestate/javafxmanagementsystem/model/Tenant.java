@@ -7,7 +7,7 @@ import java.util.List;
  * Služi za kreiranje klase Tenant
  */
 
-public sealed class Tenant extends Person permits ProblematicTenant {
+public class Tenant extends Person {
 
     private List<Invoice> invoices = new ArrayList<>();
 

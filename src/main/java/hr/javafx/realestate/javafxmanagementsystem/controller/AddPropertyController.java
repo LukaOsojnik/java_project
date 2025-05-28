@@ -76,7 +76,12 @@ public class AddPropertyController {
             String area = propertyAreaTextField.getText();
             String price = priceTextField.getText();
 
-            Address address = new Address(street, number, city, county);
+            Address address = Address.builder()
+                    .streetName(street)
+                    .streetNumber(number)
+                    .city(city)
+                    .county(county)
+                    .build();
             addressRepositoryDatabase.save(address);
 
             Address propertyAddress = addressRepositoryDatabase.returnLast();
