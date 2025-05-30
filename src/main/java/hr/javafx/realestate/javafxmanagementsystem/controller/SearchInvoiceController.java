@@ -31,6 +31,9 @@ public class SearchInvoiceController {
     InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
     private Invoice selectedInvoice;
 
+    private static final String SERIALIZATION_FILE = "logs/izmjene.dat";
+    private static final String DESERIALIZED_LOG_FILE = "logs/izmjene.log";
+
     public void initialize() {
         invoiceIdColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getId().toString()));
@@ -87,9 +90,32 @@ public class SearchInvoiceController {
     }
 
     public void changeStatus() throws SQLException, IOException {
+        if(selectedInvoice != null) {
+            ird.updateStatus(selectedInvoice);
+            selectedInvoice.markAsPaid();
+            serialize(selectedInvoice);
+        }
+    }
 
-        ird.updateStatus(selectedInvoice);
+    private void serialize(Invoice invoice) {
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SERIALIZATION_FILE))) {
+            oos.writeObject(invoice);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void deserialize() {
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(SERIALIZATION_FILE))) {
+            Invoice invoice = (Invoice) ois.readObject();
+            selectedInvoiceLabel.setText("Deserialized invoice : " + invoice.getId() + ", paid=" + invoice.isPaid());
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(DESERIALIZED_LOG_FILE, true))) {
+                writer.write("Invoice ID: " + invoice.getId() + ", paid=" + invoice.isPaid());
+                writer.newLine();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
