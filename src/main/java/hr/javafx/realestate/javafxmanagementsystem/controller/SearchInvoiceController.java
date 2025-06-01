@@ -2,6 +2,7 @@ package hr.javafx.realestate.javafxmanagementsystem.controller;
 
 import hr.javafx.realestate.javafxmanagementsystem.dbrepository.InvoiceRepositoryDatabase;
 import hr.javafx.realestate.javafxmanagementsystem.model.Invoice;
+import hr.javafx.realestate.javafxmanagementsystem.thread.DebtThread;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -28,6 +29,8 @@ public class SearchInvoiceController {
     @FXML private TableColumn<Invoice, String> invoiceStatusColumn;
 
     @FXML private Label selectedInvoiceLabel = new Label();
+    @FXML private Label unPaidDebt = new Label();
+
     InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
     private Invoice selectedInvoice;
 
@@ -56,6 +59,8 @@ public class SearchInvoiceController {
             }
         });
 
+
+
         Timeline refreshTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     try {
@@ -69,18 +74,13 @@ public class SearchInvoiceController {
         refreshTimeline.setCycleCount(Animation.INDEFINITE);
 
         refreshTimeline.play();
-
-
-
     }
 
     public void checkInvoice() throws SQLException, IOException {
 
         List<Invoice> invoiceList = ird.nextMonthInvoice();
 
-        for(Invoice i : invoiceList) {
-            ird.saveExistingInvoice(i);
-        }
+        invoiceList.forEach(a -> ird.saveExistingInvoice(a));
 
         invoiceList = ird.findAll();
 
@@ -88,7 +88,13 @@ public class SearchInvoiceController {
         invoiceTableView.setItems(observableList);
 
     }
+    public void currentDebt(){
 
+        DebtThread debtThread = new DebtThread(ird, unPaidDebt);
+        Thread runner = new Thread(debtThread);
+        runner.start();
+
+    }
     public void changeStatus() throws SQLException, IOException {
         if(selectedInvoice != null) {
             ird.updateStatus(selectedInvoice);

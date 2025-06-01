@@ -3,7 +3,6 @@ package hr.javafx.realestate.javafxmanagementsystem.controller;
 import hr.javafx.realestate.javafxmanagementsystem.filerepository.LoginRepository;
 import hr.javafx.realestate.javafxmanagementsystem.exception.FailedToAuthenticateException;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
-import hr.javafx.realestate.javafxmanagementsystem.model.Result;
 import hr.javafx.realestate.javafxmanagementsystem.model.Pair;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -27,8 +26,6 @@ public class WelcomeController {
 
         try{
             LoginRepository logIn = LoginRepository.checkLogIn(username, password);
-
-            Pair<Long, String> lastLoginInfo = new Pair<>(System.currentTimeMillis(), logIn.getRole());
 
             if(logIn.getRole().equals("user")){
                 menuController.showSearchUserPropertyScreen();

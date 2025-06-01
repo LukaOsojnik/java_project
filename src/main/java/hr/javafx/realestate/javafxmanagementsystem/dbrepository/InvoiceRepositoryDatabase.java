@@ -13,10 +13,25 @@ import java.util.List;
 
 import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.logger;
 
+
+
 public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractRepositoryDatabase<T>{
 
+    private static Boolean DATABASE_ACCESS_IN_PROGRESS = false;
+
     @Override
-    public T findById(Long id) {
+    public synchronized T findById(Long id) {
+
+        while(DATABASE_ACCESS_IN_PROGRESS) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DATABASE_ACCESS_IN_PROGRESS = true;
+
         Invoice invoice;
         try(Connection conn = openConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT invoice.id, invoice.lease_id," +
@@ -34,7 +49,17 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
     }
 
     @Override
-    public List<T> findAll() throws SQLException, IOException {
+    public synchronized List<T> findAll() {
+
+        while(DATABASE_ACCESS_IN_PROGRESS) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DATABASE_ACCESS_IN_PROGRESS = true;
 
         List<T> invoiceList = new ArrayList<>();
         try(Connection conn = openConnection();
@@ -44,7 +69,13 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
             while(rs.next()){
                 invoiceList.add(extractFromResultSet(rs));
             }
+        } catch(SQLException | IOException _) {
+            throw new RepositoryAccessException();
+        } finally{
+            DATABASE_ACCESS_IN_PROGRESS = false;
+            notifyAll();
         }
+
         return invoiceList;
     }
     public T extractFromResultSet(ResultSet rs) throws SQLException {
@@ -59,7 +90,17 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
     }
 
     @Override
-    public void save(T entity) {
+    public synchronized void save(T entity) {
+
+        while(DATABASE_ACCESS_IN_PROGRESS) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DATABASE_ACCESS_IN_PROGRESS = true;
 
         try(Connection conn = openConnection();
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO invoice(lease_id," +
@@ -73,9 +114,22 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
         } catch(IOException | SQLException e) {
             logger.error("Pogreška kod spremanja računa u bazu podataka.");
             throw new RepositoryAccessException(e);
+        } finally{
+            DATABASE_ACCESS_IN_PROGRESS = false;
+            notifyAll();
         }
     }
-    public void saveExistingInvoice(T entity) {
+    public synchronized void saveExistingInvoice(T entity) {
+
+        while(DATABASE_ACCESS_IN_PROGRESS) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DATABASE_ACCESS_IN_PROGRESS = true;
 
         try(Connection conn = openConnection();
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO invoice(lease_id," +
@@ -89,19 +143,49 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
         } catch(IOException | SQLException e) {
             logger.error("Pogreška kod spremanja računa u bazu podataka.");
             throw new RepositoryAccessException(e);
+        } finally{
+            DATABASE_ACCESS_IN_PROGRESS = false;
+            notifyAll();
         }
     }
 
 
-    public void updateStatus(T entity) throws SQLException, IOException {
+    public synchronized void updateStatus(T entity) {
+
+        while(DATABASE_ACCESS_IN_PROGRESS) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DATABASE_ACCESS_IN_PROGRESS = true;
+
         try(Connection conn = openConnection();
             PreparedStatement pstmt = conn.prepareStatement("UPDATE invoice SET is_paid = ? WHERE id = ?")) {
             pstmt.setString(1, "TRUE");
             pstmt.setLong(2, entity.getId());
             pstmt.executeUpdate();
+        } catch(IOException | SQLException e) {
+            throw new RepositoryAccessException(e);
+        } finally{
+            DATABASE_ACCESS_IN_PROGRESS = false;
+            notifyAll();
         }
     }
-    public List<Invoice> nextMonthInvoice() throws SQLException, IOException {
+    public synchronized List<Invoice> nextMonthInvoice() {
+
+        while(DATABASE_ACCESS_IN_PROGRESS) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DATABASE_ACCESS_IN_PROGRESS = true;
+
         List<Invoice> invoices = new ArrayList<>();
         try(Connection conn = openConnection();
             Statement stmt = conn.createStatement()) {
@@ -111,6 +195,11 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
             while(rs.next()){
                 invoices.add(extractFromResultSet(rs));
             }
+        } catch(IOException | SQLException e) {
+            throw new RepositoryAccessException(e);
+        } finally{
+            DATABASE_ACCESS_IN_PROGRESS = false;
+            notifyAll();
         }
         return invoices;
     }

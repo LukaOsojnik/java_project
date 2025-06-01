@@ -91,12 +91,10 @@ public class SearchInboxController {
         List<InboxMessage> listOfUnpaid = inboxRDB.checkForUnpaid();
 
 
+        listOfUnpaid.stream()
+                .filter(i -> !ird.findById(i.getInvoiceId()).isPaid().booleanValue())
+                .forEach(i ->inboxRDB.save(i));
 
-        for(InboxMessage i : listOfUnpaid) {
-            if(!ird.findById(i.getInvoiceId()).isPaid().booleanValue()) {
-                inboxRDB.save(i);
-            }
-        }
 
         ObservableList<InboxMessage> observableList = FXCollections.observableList(inboxList);
         inboxTableView.setItems(observableList);

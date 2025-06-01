@@ -17,7 +17,7 @@ public class RealEsteteApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        mainStage = stage; // NOSONAR
+        mainStage = stage; // NOSONAR 
 
 
         FXMLLoader fxmlLoader = new FXMLLoader(RealEsteteApplication.class.getResource("firstScreen.fxml"));
