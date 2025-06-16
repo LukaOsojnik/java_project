@@ -15,6 +15,8 @@ import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.
 
 public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRepositoryDatabase<T> {
 
+    private static final String ERROR_MESSAGE = "Pogreška pri spajaju na bazu.";
+
     @Override
     public T findById(Long id) {
         try(Connection conn = openConnection();
@@ -29,7 +31,7 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
                 throw new EmptyRepositoryResultException("Inbox message with id " + id + " not found");
             }
         } catch (SQLException | IOException e) {
-            logger.error("Pogreška kod pronalaska poruke u inboxu.");
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -46,7 +48,7 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
             }
             return inboxMessages;
         } catch (SQLException | IOException e) {
-            logger.error("Pogreška kod čitanja poruka iz inboxa.");
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -68,12 +70,12 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
             stmt.setString(3, LocalDateTime.now().plusDays(1).toLocalDate().toString());
             stmt.executeUpdate();
         } catch (SQLException | IOException e) {
-            logger.error("Pogreška kod spremanja poruke u inbox.");
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
 
-    public List<InboxMessage> checkForUnpaid() throws IOException, SQLException {
+    public List<InboxMessage> checkForUnpaid() {
         List<InboxMessage> inboxList = new ArrayList<>();
         try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
@@ -84,8 +86,22 @@ public class InboxRepositoryDatabase<T extends InboxMessage> extends AbstractRep
             while(rs.next()) {
                 inboxList.add(extractFromResultSet(rs));
             }
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
+            throw new RepositoryAccessException(e);
         }
         return inboxList;
+    }
+
+    public void clearMail() {
+        try(Connection conn = openConnection();
+            PreparedStatement stmt = conn.prepareStatement("delete inbox")){
+            stmt.executeUpdate();
+
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
+            throw new RepositoryAccessException(e);
+        }
     }
 
 

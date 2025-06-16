@@ -19,22 +19,20 @@ public class EditLeaseController {
     String rentPrice;
     private LeaseAgreement lease;
 
-    public void setEmail(String email){
-        emailTextField.setText(email);
-        this.email = email;
-    }
-    public void setPhone(String phone){
-        phoneTextField.setText(phone);
-        this.phone = phone;
-    }
-    public void setNewPrice(String rentPrice){
-        rentPriceTextField.setText(rentPrice);
-        this.rentPrice = rentPrice;
-    }
-    public void passLeaseAgreement(LeaseAgreement leaseAgreement){
-        lease = leaseAgreement;
-    }
+    public void initialize(){
 
+    }
+    public void passedData(LeaseAgreement lease){
+        this.lease = lease;
+
+        this.email = lease.getTenant().getEmail();
+        this.phone = lease.getTenant().getContactNumber();
+        this.rentPrice = lease.getRentPrice().toString();
+
+        emailTextField.setText(this.email);
+        phoneTextField.setText(this.phone);
+        rentPriceTextField.setText(this.rentPrice);
+    }
     public void editLease() {
         LeaseRepositoryDatabase<LeaseAgreement> leaseRepositoryDatabase = new LeaseRepositoryDatabase<>();
         TenantRepositoryDatabase<Tenant> tenantRepositoryDatabase = new TenantRepositoryDatabase<>();
@@ -45,6 +43,11 @@ public class EditLeaseController {
                     lease.getTenant().getEmail(),
                     lease.getTenant().getContactNumber());
             sb.append("Uspješno uređivanje kontakta najmodavca!\n");
+        }
+        if(!phone.equals(phoneTextField.getText())){
+            leaseRepositoryDatabase.updateLeaseAgreement(lease.getId(),
+                    rentPriceTextField.getText());
+            sb.append("Uspješno uređivanje broja mobitela!");
         }
         if(!rentPrice.equals(rentPriceTextField.getText())){
             leaseRepositoryDatabase.updateLeaseAgreement(lease.getId(),

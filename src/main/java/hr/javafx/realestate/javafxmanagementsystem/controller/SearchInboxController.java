@@ -25,12 +25,8 @@ public class SearchInboxController {
     @FXML private TableColumn<InboxMessage, String> creationDateColumn;
     @FXML private TableColumn<InboxMessage, String> messageColumn;
 
-    @FXML private Label selectedInboxLabel = new Label();
-
-    private Long selectedInvoiceId;
-
-
     private static final String INBOX_MESSAGE = "Imate nedospjelu ratu. Molim Vas podmirite račun.";
+
     InvoiceRepositoryDatabase<Invoice> ird = new InvoiceRepositoryDatabase<>();
     InboxRepositoryDatabase<InboxMessage> inboxRDB = new InboxRepositoryDatabase<>();
 
@@ -42,16 +38,6 @@ public class SearchInboxController {
                 new SimpleStringProperty(cellData.getValue().getMessage()));
         creationDateColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getReminderDate().toString()));
-
-        inboxTableView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1) {
-                InboxMessage selected = inboxTableView.getSelectionModel().getSelectedItem();
-                if (selected != null) {
-                    selectedInvoiceId = selected.getInvoiceId();
-                    selectedInboxLabel.setText(ird.findById(selectedInvoiceId).getLease().getTenant().getFullName());
-                }
-            }
-        });
 
         Timeline refreshTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
@@ -99,6 +85,10 @@ public class SearchInboxController {
         ObservableList<InboxMessage> observableList = FXCollections.observableList(inboxList);
         inboxTableView.setItems(observableList);
 
+    }
+
+    public void clearMailBox(){
+        inboxRDB.clearMail();
     }
 
 

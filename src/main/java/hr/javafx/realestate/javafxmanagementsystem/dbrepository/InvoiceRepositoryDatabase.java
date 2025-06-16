@@ -16,7 +16,7 @@ import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.
 
 
 public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractRepositoryDatabase<T>{
-
+    private static final String ERROR_MESSAGE = "Pogreška pri spajaju na bazu.";
     private static Boolean DATABASE_ACCESS_IN_PROGRESS = false;
 
     @Override
@@ -43,8 +43,13 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
                 return (T) invoice;
             }
             throw new RepositoryAccessException("Invoice with id " + id + " not found");
-        } catch (SQLException | IOException _) {
-            throw new RepositoryAccessException();
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
+            throw new RepositoryAccessException(e);
+        } finally {
+            DATABASE_ACCESS_IN_PROGRESS = false;
+            notifyAll();
+
         }
     }
 
@@ -69,8 +74,9 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
             while(rs.next()){
                 invoiceList.add(extractFromResultSet(rs));
             }
-        } catch(SQLException | IOException _) {
-            throw new RepositoryAccessException();
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
+            throw new RepositoryAccessException(e);
         } finally{
             DATABASE_ACCESS_IN_PROGRESS = false;
             notifyAll();
@@ -111,8 +117,8 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
             pstmt.setString(3, "FALSE");
             pstmt.setBigDecimal(4, entity.getLease().getRentPrice());
             pstmt.executeUpdate();
-        } catch(IOException | SQLException e) {
-            logger.error("Pogreška kod spremanja računa u bazu podataka.");
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         } finally{
             DATABASE_ACCESS_IN_PROGRESS = false;
@@ -140,8 +146,8 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
             pstmt.setString(3, "FALSE");
             pstmt.setBigDecimal(4, entity.getLease().getRentPrice());
             pstmt.executeUpdate();
-        } catch(IOException | SQLException e) {
-            logger.error("Pogreška kod spremanja računa u bazu podataka.");
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         } finally{
             DATABASE_ACCESS_IN_PROGRESS = false;
@@ -167,7 +173,8 @@ public class InvoiceRepositoryDatabase<T extends Invoice> extends AbstractReposi
             pstmt.setString(1, "TRUE");
             pstmt.setLong(2, entity.getId());
             pstmt.executeUpdate();
-        } catch(IOException | SQLException e) {
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         } finally{
             DATABASE_ACCESS_IN_PROGRESS = false;

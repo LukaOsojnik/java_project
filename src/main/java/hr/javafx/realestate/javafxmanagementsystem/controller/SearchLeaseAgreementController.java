@@ -29,6 +29,7 @@ public class SearchLeaseAgreementController {
 
     private LeaseAgreement selectedLeaseAgreement;
 
+
     public void initialize(){
         leaseAgreementId.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getId().toString()));
@@ -68,11 +69,11 @@ public class SearchLeaseAgreementController {
 
 
     public void editLeaseScreen() throws IOException {
-        if(selectedLeaseAgreement != null){
+
+        if (selectedLeaseAgreement != null) {
             MenuController<LeaseAgreement> menuController = new MenuController<>();
             menuController.showEditLease(selectedLeaseAgreement);
-        }
-        else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pogreške kod odabira ugovora!");
             alert.setHeaderText("Ugovor nije izabran.");

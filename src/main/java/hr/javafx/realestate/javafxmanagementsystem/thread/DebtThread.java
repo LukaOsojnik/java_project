@@ -23,12 +23,12 @@ public class DebtThread implements Runnable {
 
     @Override
     public void run() {
-        Optional<BigDecimal> totalDebt;
-        totalDebt = ird.findAll().stream()
+        Optional<BigDecimal> totalDebt = ird.findAll().stream()
                 .filter(i -> !i.isPaid().booleanValue())
                 .map(Invoice::getRentPrice)
                 .reduce(BigDecimal::add);
 
-        Platform.runLater(() -> debt.setText(totalDebt.get().toString()));
+        Platform.runLater(() ->
+            debt.setText(totalDebt.orElse(BigDecimal.ZERO).toString()));
     }
 }

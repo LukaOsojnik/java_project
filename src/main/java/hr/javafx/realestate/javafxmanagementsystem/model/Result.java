@@ -15,6 +15,14 @@ public class Result<T> {
         this.message = message;
     }
 
+    public static <T> Result<T> success(T data) {
+        return new Result<>(data, true, null);
+    }
+
+    public static <T> Result<T> failure(String message) {
+        return new Result<>(null, false, message);
+    }
+
     public T getData() {
         return data;
     }

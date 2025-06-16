@@ -83,7 +83,7 @@
                         </PasswordField>
                     </children>
                 </GridPane>
-                <Button mnemonicParsing="false" onAction="#logIn" text="Login" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
+                <Button mnemonicParsing="false" onAction="#showFirstScreen" text="Login" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets top="30.0" />
                     </GridPane.margin>

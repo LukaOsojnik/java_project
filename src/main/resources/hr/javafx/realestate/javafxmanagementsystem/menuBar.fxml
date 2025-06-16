@@ -21,6 +21,7 @@
       <Menu mnemonicParsing="false" text="Invoices">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#showInvoiceScreen" text="Show invoices" />
+            <MenuItem mnemonicParsing="false" onAction="#showPaidInvoice" text="Paid invoices" />
         </items>
       </Menu>
       <Menu mnemonicParsing="false" text="Inbox">

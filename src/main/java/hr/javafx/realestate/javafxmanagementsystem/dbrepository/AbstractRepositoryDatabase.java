@@ -1,4 +1,6 @@
 package hr.javafx.realestate.javafxmanagementsystem.dbrepository;
+import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -7,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+
+import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.logger;
 
 /**
  * Služi za nasljeđivanje ostalih repozitorija u projektu.
@@ -25,7 +29,7 @@ public abstract class AbstractRepositoryDatabase<T> {
      * @throws SQLException poziva u slučaju problema s bazom podataka
      */
 
-    static Connection openConnection() throws IOException, SQLException {
+    static Connection openConnection() throws IOException {
 
         Properties props = new Properties();
         try (FileReader reader = new FileReader(databasePath.toFile())) {
@@ -34,6 +38,9 @@ public abstract class AbstractRepositoryDatabase<T> {
                     props.getProperty("urlBase"),
                     props.getProperty("username"),
                     props.getProperty("password"));
+        } catch(SQLException e) {
+            logger.error("Pogreška kod spajanja na bazu.");
+            throw new RepositoryAccessException(e.getMessage());
         }
     }
 

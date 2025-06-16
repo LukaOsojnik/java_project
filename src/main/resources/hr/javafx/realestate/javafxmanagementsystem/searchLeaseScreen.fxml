@@ -66,11 +66,6 @@
                                         <Insets left="40.0" />
                                     </GridPane.margin>
                                 </Button>
-                        <Button mnemonicParsing="false" onAction="#editLeaseScreen" text="Edit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets left="300.0" right="20.0" />
-                           </GridPane.margin>
-                        </Button>
                             </children>
                         </GridPane>
                     </children>

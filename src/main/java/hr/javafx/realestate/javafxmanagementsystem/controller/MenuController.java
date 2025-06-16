@@ -54,17 +54,11 @@ public class MenuController<T extends LeaseAgreement> {
         RealEsteteApplication.getMainStage().show();
     }
 
-    public void showEditLease(T entity) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(RealEsteteApplication.class.getResource("editLeaseScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 924, 611);
+    public void showEditLease(LeaseAgreement entity) throws IOException {
+        FXMLLoader loader = new FXMLLoader(RealEsteteApplication.class.getResource("editLeaseScreen.fxml"));
 
-        EditLeaseController controller = fxmlLoader.getController();
-        controller.setEmail(entity.getTenant().getEmail());
-        controller.setPhone(entity.getTenant().getContactNumber());
-        controller.setNewPrice(entity.getRentPrice().toString());
-        controller.passLeaseAgreement(entity);
-
-        RealEsteteApplication.getMainStage().setTitle("Spremanje ugovora");
+        Scene scene = new Scene(loader.load(), 924, 611);
+        RealEsteteApplication.getMainStage().setTitle("Uređivanje ugovora");
         RealEsteteApplication.getMainStage().setScene(scene);
         RealEsteteApplication.getMainStage().show();
     }
@@ -86,6 +80,17 @@ public class MenuController<T extends LeaseAgreement> {
         RealEsteteApplication.getMainStage().setScene(scene);
         RealEsteteApplication.getMainStage().show();
     }
+
+    public void showPaidInvoice() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(RealEsteteApplication.class.getResource("invoicePaidScreen.fxml"));
+
+        Scene scene = new Scene(fxmlLoader.load(), 924, 611);
+        RealEsteteApplication.getMainStage().setTitle("Pregled poruka");
+        RealEsteteApplication.getMainStage().setScene(scene);
+        RealEsteteApplication.getMainStage().show();
+
+    }
+
 
 
 

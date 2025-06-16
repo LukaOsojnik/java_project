@@ -1,6 +1,8 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
 import hr.javafx.realestate.javafxmanagementsystem.enum1.PropertyStatus;
+import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
+import hr.javafx.realestate.javafxmanagementsystem.model.ContactInfo;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
 import hr.javafx.realestate.javafxmanagementsystem.model.Property;
 import hr.javafx.realestate.javafxmanagementsystem.model.Tenant;
@@ -42,6 +44,8 @@ public class AddLeaseAgreementController {
 
     ValidationSupport validationSupport = new ValidationSupport();
 
+    PropertyRepositoryDatabase<Property> propertyRepository = new PropertyRepositoryDatabase<>();
+
     public void initialize(){
 
         validationSupport.registerValidator(nameTextField,
@@ -76,7 +80,6 @@ public class AddLeaseAgreementController {
         propertyAreaColumn.setCellValueFactory(celldata ->
                 new SimpleStringProperty(celldata.getValue().getMetersSquared().toString()));
 
-        PropertyRepositoryDatabase<Property> propertyRepository = new PropertyRepositoryDatabase<>();
         List<Property> propertyList = propertyRepository.findAll();
         propertyList = propertyList.stream()
                 .filter(p -> p.getPropertyStatus().equals(PropertyStatus.AVAILABLE))
@@ -94,7 +97,7 @@ public class AddLeaseAgreementController {
         });
     }
 
-    public void addLeaseAgreement() throws SQLException, IOException {
+    public void addLeaseAgreement() throws SQLException, IOException, RepositoryAccessException{
         if(validationSupport.isInvalid().booleanValue() || selectedProperty == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pogreške kod kreiranja novog ugovora!");
@@ -111,7 +114,8 @@ public class AddLeaseAgreementController {
             String phone = phoneTextField.getText();
             String email = emailTextField.getText();
 
-            Tenant tenantSave = new Tenant(firstName, lastName, phone, email);
+            ContactInfo contactInfo = new ContactInfo(phone, email);
+            Tenant tenantSave = new Tenant(firstName, lastName, contactInfo.phone(), contactInfo.email());
             tenantRepository.save(tenantSave);
             Tenant tenant = tenantRepository.returnLast();
 
@@ -125,15 +129,17 @@ public class AddLeaseAgreementController {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Uspješno kreiran novi ugovor!");
+            alert.setHeaderText("Ugovor je spremljen.");
+            alert.setContentText("Račun je automatski generiran");
             alert.showAndWait();
 
-            PropertyRepositoryDatabase<Property> propertyRepository = new PropertyRepositoryDatabase<>();
             List<Property> propertyList = propertyRepository.findAll();
             propertyList = propertyList.stream()
                     .filter(p -> p.getPropertyStatus().equals(PropertyStatus.AVAILABLE))
                     .toList();
             ObservableList<Property> observableList = FXCollections.observableList(propertyList);
             propertyTableView.setItems(observableList);
+
 
 
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- File samo za ERROR poruke -->
+
     <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/pogreske.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -13,15 +13,7 @@
         </encoder>
     </appender>
 
-    <!-- File za izmjene (CREATE, UPDATE, DELETE operacije) -->
-    <appender name="CHANGES_FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/izmjene.log</file>
-        <encoder>
-            <pattern>%date [%thread] %logger{10} - %msg%n</pattern>
-        </encoder>
-    </appender>
 
-    <!-- File za brojanje nekretnina -->
     <appender name="PROPERTY_COUNT_FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/brojanje-nekretnina.log</file>
         <encoder>
@@ -36,7 +28,7 @@
         </encoder>
     </appender>
 
-    <!-- Logger za SearchPropertyController - brojanje -->
+
     <logger name="hr.javafx.realestate.javafxmanagementsystem.controller.SearchPropertyController" level="INFO" additivity="false">
         <appender-ref ref="PROPERTY_COUNT_FILE" />
         <appender-ref ref="CONSOLE" />

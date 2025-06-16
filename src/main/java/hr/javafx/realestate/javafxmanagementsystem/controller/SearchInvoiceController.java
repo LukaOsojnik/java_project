@@ -1,7 +1,11 @@
 package hr.javafx.realestate.javafxmanagementsystem.controller;
 
 import hr.javafx.realestate.javafxmanagementsystem.dbrepository.InvoiceRepositoryDatabase;
+import hr.javafx.realestate.javafxmanagementsystem.exception.ReadSerializedException;
+import hr.javafx.realestate.javafxmanagementsystem.filerepository.LoginRepository;
 import hr.javafx.realestate.javafxmanagementsystem.model.Invoice;
+import hr.javafx.realestate.javafxmanagementsystem.model.LogIn;
+import hr.javafx.realestate.javafxmanagementsystem.model.PaidInvoice;
 import hr.javafx.realestate.javafxmanagementsystem.thread.DebtThread;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -10,14 +14,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.util.Duration;
 
 import java.io.*;
-import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.logger;
 
 public class SearchInvoiceController {
 
@@ -35,7 +40,9 @@ public class SearchInvoiceController {
     private Invoice selectedInvoice;
 
     private static final String SERIALIZATION_FILE = "logs/izmjene.dat";
-    private static final String DESERIALIZED_LOG_FILE = "logs/izmjene.log";
+
+    private LogIn user = LoginRepository.getCurrentUser();
+    private String role = user.getRole();
 
     public void initialize() {
         invoiceIdColumn.setCellValueFactory(celldata ->
@@ -62,13 +69,9 @@ public class SearchInvoiceController {
 
 
         Timeline refreshTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), event -> {
-                    try {
-                        checkInvoice();
-                    } catch (SQLException | IOException e) {
-                        e.printStackTrace();
-                    }
-                })
+                new KeyFrame(Duration.seconds(1), event ->
+                    checkInvoice()
+                )
         );
 
         refreshTimeline.setCycleCount(Animation.INDEFINITE);
@@ -76,7 +79,7 @@ public class SearchInvoiceController {
         refreshTimeline.play();
     }
 
-    public void checkInvoice() throws SQLException, IOException {
+    public void checkInvoice() {
 
         List<Invoice> invoiceList = ird.nextMonthInvoice();
 
@@ -95,34 +98,55 @@ public class SearchInvoiceController {
         runner.start();
 
     }
-    public void changeStatus() throws SQLException, IOException {
-        if(selectedInvoice != null) {
+    public void changeStatus() {
+        if(selectedInvoice != null && !selectedInvoice.isPaid()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("POTVRDA");
+            alert.setHeaderText("Plaćen račun");
+            alert.setContentText("Kliknite ako ste sigurni da je račun plaćen.");
+            alert.showAndWait();
+            Invoice changedInvoice = new Invoice(selectedInvoice.getId(), selectedInvoice.getLease(),
+                    selectedInvoice.getDueDate(), selectedInvoice.isPaid(), selectedInvoice.getRentPrice());
             ird.updateStatus(selectedInvoice);
             selectedInvoice.markAsPaid();
-            serialize(selectedInvoice);
+            serialize(selectedInvoice, changedInvoice);
         }
     }
 
-    private void serialize(Invoice invoice) {
-        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SERIALIZATION_FILE))) {
-            oos.writeObject(invoice);
+    private void serialize(Invoice invoice, Invoice changedInvoice) {
+        List<PaidInvoice> entries = new ArrayList<>();
+        try{
+            entries = readAllEntries();
+
+        } catch(ReadSerializedException e){
+            logger.error("Failed to read serialized file.");
+        }
+        entries.add(new PaidInvoice(invoice, changedInvoice, role, LocalDateTime.now()));
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SERIALIZATION_FILE))) {
+            oos.writeObject(entries);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void deserialize() {
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(SERIALIZATION_FILE))) {
-            Invoice invoice = (Invoice) ois.readObject();
-            selectedInvoiceLabel.setText("Deserialized invoice : " + invoice.getId() + ", paid=" + invoice.isPaid());
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(DESERIALIZED_LOG_FILE, true))) {
-                writer.write("Invoice ID: " + invoice.getId() + ", paid=" + invoice.isPaid());
-                writer.newLine();
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+    static List<PaidInvoice> readAllEntries() throws ReadSerializedException {
+        File file = new File(SERIALIZATION_FILE);
+
+        if (!file.exists() || file.length() == 0) {
+            return new ArrayList<>();
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            Object obj = ois.readObject();
+            return (List<PaidInvoice>) obj;
+
+        }  catch (IOException | ClassNotFoundException e) {
+            throw new ReadSerializedException(e);
         }
     }
+
+
+
 
 
 

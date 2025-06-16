@@ -17,6 +17,9 @@ import java.util.List;
 import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.logger;
 
 public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractRepositoryDatabase<T> {
+
+    private static final String ERROR_MESSAGE = "Pogreška pri spajaju na bazu.";
+
     @Override
     public T findById(Long id) {
         try(Connection conn = openConnection();
@@ -32,6 +35,7 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
                 throw new EmptyRepositoryResultException("Lease agreement with id " + id + " not found");
             }
         } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -49,8 +53,8 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
             }
             return leaseAgreementList;
 
-        }catch(SQLException | IOException e) {
-            logger.error("Pogreška kod čitanja ugovora iz baze podataka.");
+        }catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -86,8 +90,8 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
             LeaseAgreement lease = returnLast();
             Invoice invoice = new Invoice(lease, lease.getSigningDate());
             ird.save(invoice);
-        } catch(IOException | SQLException e) {
-            logger.error("Pogreška kod spremanja ugovora u bazu podataka.");
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -104,7 +108,8 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
             else{
                 throw new EmptyRepositoryResultException("Address not found");
             }
-        } catch (SQLException | IOException e) {
+        }catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
 
@@ -118,8 +123,8 @@ public class LeaseRepositoryDatabase<T extends LeaseAgreement> extends AbstractR
             updateMeal.setString(1, rentPrice);
             updateMeal.setLong(2, leaseId);
             updateMeal.executeUpdate();
-        } catch(SQLException | IOException e) {
-            logger.error("Pogreška kod uređivanja ugovora.");
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }

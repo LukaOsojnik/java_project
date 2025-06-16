@@ -37,6 +37,7 @@ public abstract class Person extends Entity implements Contactable{
         this.lastName = lastName;
     }
 
+    @Override
     public String getContactNumber() {
         return contactNumber;
     }
@@ -45,6 +46,7 @@ public abstract class Person extends Entity implements Contactable{
         this.contactNumber = contactNumber;
     }
 
+    @Override
     public String getEmail() {
         return email;
     }

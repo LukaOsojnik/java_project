@@ -3,13 +3,15 @@ package hr.javafx.realestate.javafxmanagementsystem.controller;
 import hr.javafx.realestate.javafxmanagementsystem.filerepository.LoginRepository;
 import hr.javafx.realestate.javafxmanagementsystem.exception.FailedToAuthenticateException;
 import hr.javafx.realestate.javafxmanagementsystem.model.LeaseAgreement;
-import hr.javafx.realestate.javafxmanagementsystem.model.Pair;
+import hr.javafx.realestate.javafxmanagementsystem.model.LogIn;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+
+import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.logger;
 
 public class WelcomeController {
 
@@ -25,7 +27,7 @@ public class WelcomeController {
         String password = passwordField.getText();
 
         try{
-            LoginRepository logIn = LoginRepository.checkLogIn(username, password);
+            LogIn logIn = LoginRepository.checkLogIn(username, password);
 
             if(logIn.getRole().equals("user")){
                 menuController.showSearchUserPropertyScreen();
@@ -42,6 +44,7 @@ public class WelcomeController {
             alert.setTitle("Login unsuccessful");
             alert.setContentText(stringBuilder.toString());
             alert.showAndWait();
+            logger.error("Login unsuccessful");
         }
     }
 }

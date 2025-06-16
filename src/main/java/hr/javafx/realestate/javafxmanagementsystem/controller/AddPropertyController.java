@@ -97,6 +97,7 @@ public class AddPropertyController {
                     .append(" u gradu " + city + " je spremljena!");
             alert.setContentText(sb.toString());
             alert.showAndWait();
+
         }
 
         cityTextField.clear();

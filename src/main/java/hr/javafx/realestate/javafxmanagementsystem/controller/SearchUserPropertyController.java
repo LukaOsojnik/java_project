@@ -32,7 +32,6 @@ public class SearchUserPropertyController {
     @FXML private TableColumn<Property, String> propertyAddressColumn;
     @FXML private TableColumn<Property, String> propertyStatusColumn;
 
-
     public void initialize(){
 
         countyComboBox.getItems().addAll(County.values());

@@ -1,0 +1,26 @@
+2025-05-26 18:28:05,829 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:48] Failed to read serialized file.
+2025-05-27 18:28:03,381 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [SearchInvoiceController.java:118] Failed to read serialized file.
+2025-05-28 19:37:54,424 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-05-30 20:41:56,302 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-05-30 21:31:22,929 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:43] Failed to read serialized file.
+2025-05-31 21:32:09,076 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [SearchInvoiceController.java:137] Failed to read serialized file.
+2025-05-31 21:35:12,044 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-05-31 21:35:37,414 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-06-01 21:35:26,026 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [SearchInvoiceController.java:135] Failed to read serialized file.
+2025-06-01 21:39:52,130 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [SearchInvoiceController.java:138] Failed to read serialized file.
+2025-06-01 21:41:28,028 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-06-01 21:41:51,885 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:43] Failed to read serialized file.
+2025-06-01 21:43:07,973 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-06-01 21:43:13,101 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-06-01 21:43:39,199 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:43] Failed to read serialized file.
+2025-06-01 21:44:28,576 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-06-01 21:44:48,198 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [SearchInvoiceController.java:138] Failed to read serialized file.
+2025-06-01 21:45:05,805 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-06-01 21:52:19,797 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:46] Failed to read serialized file.
+2025-06-01 21:52:29,299 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [SearchInvoiceController.java:138] Failed to read serialized file.
+2025-06-01 21:55:55,296 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:48] Login unsuccessful
+2025-06-01 21:59:05,649 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:46] Failed to read serialized file.
+2025-06-01 21:59:36,575 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:46] Failed to read serialized file.
+2025-06-01 22:00:14,626 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [ChangedInvoiceController.java:46] Failed to read serialized file.
+2025-06-01 22:02:02,741 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [SearchInvoiceController.java:135] Failed to read serialized file.
+2025-06-14 22:17:17,263 ERROR [JavaFX Application Thread] h.j.r.j.RealEsteteApplication [WelcomeController.java:47] Login unsuccessful

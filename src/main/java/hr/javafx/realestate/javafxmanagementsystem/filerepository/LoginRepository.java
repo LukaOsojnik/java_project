@@ -2,6 +2,7 @@ package hr.javafx.realestate.javafxmanagementsystem.filerepository;
 
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.FailedToAuthenticateException;
+import hr.javafx.realestate.javafxmanagementsystem.model.LogIn;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
@@ -15,15 +16,11 @@ public class LoginRepository {
     private static final String USER_FILE_PATH = "dat/user.txt";
     private static final Integer NUMBER_OF_ROWS_PER_USER = 2;
 
-    private final String email;
-    public final String role;
+    private static LogIn currentUser;
 
-    public LoginRepository(String email, String role){
-        this.email = email;
-        this.role = role;
-    }
+    private LoginRepository() {}
 
-    public static LoginRepository checkLogIn(String username, String password) throws FailedToAuthenticateException {
+    public static LogIn checkLogIn(String username, String password) throws FailedToAuthenticateException {
 
         String sha256hex = DigestUtils.sha256Hex(password);
 
@@ -37,7 +34,9 @@ public class LoginRepository {
                 String hashedPassword = fileRows.get(NUMBER_OF_ROWS_PER_USER*recordNumber + 1);
                 if(splitUsername[0].equals(username)){
                     if(hashedPassword.equals(sha256hex)){
-                        return new LoginRepository(splitUsername[0], splitUsername[1]);
+                        LogIn user = new LogIn(splitUsername[0], splitUsername[1]);
+                        currentUser = user;
+                        return user;
                     }
                     else {
                         throw new FailedToAuthenticateException();
@@ -50,10 +49,9 @@ public class LoginRepository {
         throw new FailedToAuthenticateException();
     }
 
-    public String getEmail() {
-        return email;
-    }
-    public String getRole() {
-        return role;
+
+
+    public static LogIn getCurrentUser() {
+        return currentUser;
     }
 }

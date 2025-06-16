@@ -17,6 +17,9 @@ import java.util.List;
 import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.logger;
 
 public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRepositoryDatabase<T>{
+
+
+    private static final String ERROR_MESSAGE = "Pogreška pri spajaju na bazu.";
     @Override
     public T findById(Long id) throws EmptyRepositoryResultException {
         try(Connection conn = openConnection();
@@ -32,9 +35,9 @@ public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRep
             else{
                 throw new EmptyRepositoryResultException("Property with id " + id + " not found");
             }
-        } catch(IOException | SQLException e){
-            logger.error("Pogreška s pronalaskom id-a kod nekretnine.");
-            throw new RepositoryAccessException(e.getMessage());
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
+            throw new RepositoryAccessException(e);
         }
     }
 
@@ -56,7 +59,7 @@ public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRep
             return propertyList;
 
         } catch (SQLException | IOException e) {
-            logger.error("Pogreška u čitanju imovine iz baze.");
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -95,7 +98,7 @@ public class PropertyRepositoryDatabase<T extends Property>  extends AbstractRep
 
             stmt.executeUpdate();
         } catch (SQLException | IOException e) {
-            logger.error("Pogreška kod spremanja imovine.");
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }

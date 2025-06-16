@@ -4,7 +4,6 @@ import hr.javafx.realestate.javafxmanagementsystem.enum1.County;
 import hr.javafx.realestate.javafxmanagementsystem.exception.EmptyRepositoryResultException;
 import hr.javafx.realestate.javafxmanagementsystem.exception.RepositoryAccessException;
 import hr.javafx.realestate.javafxmanagementsystem.model.Address;
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.
 
 public class AddressRepositoryDatabase<T extends Address> extends AbstractRepositoryDatabase<T> {
 
+    private static final String ERROR_MESSAGE = "Pogreška pri spajaju na bazu.";
 
     @Override
     public T findById(Long id) {
@@ -29,6 +29,7 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
                 throw new EmptyRepositoryResultException("Address with id " + id + " not found");
             }
         } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -49,7 +50,7 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
             return list;
 
         } catch (SQLException | IOException e) {
-            logger.error("Pogrešno čitanje adrese iz repozitoriju.");
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -83,8 +84,8 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
             stmt.setString(4, entity.getCounty().name());
             stmt.executeUpdate();
 
-        } catch (IOException | SQLException e) {
-            logger.error("Pogrešno spremanje adrese u repozitoriju.");
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -98,9 +99,10 @@ public class AddressRepositoryDatabase<T extends Address> extends AbstractReposi
                 return extractFromResultSet(rs);
             }
             else{
-                throw new EmptyRepositoryResultException("Address not found");
+                throw new EmptyRepositoryResultException("Nema niti jedne adrese u bazi.");
             }
         } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }

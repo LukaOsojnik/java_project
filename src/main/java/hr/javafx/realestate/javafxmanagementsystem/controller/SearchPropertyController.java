@@ -35,7 +35,8 @@ public class SearchPropertyController {
     @FXML private TableColumn<Property, String> propertyStatusColumn;
     @FXML private TableColumn<Property, String> propertyPriceColumn;
 
-    private static final Logger logger = LoggerFactory.getLogger(SearchPropertyController.class);
+    private static final Logger loggerProperty = LoggerFactory.getLogger(SearchPropertyController.class);
+
     public void initialize(){
 
         countyComboBox.getItems().addAll(County.values());
@@ -104,7 +105,7 @@ public class SearchPropertyController {
 
         Pair<Integer, LocalDate> generic = new Pair<>(listProperty.size(), LocalDate.now());
 
-        logger.info("Broj nekretnina: {} | Vrijeme: {}", generic.getFirst(), generic.getSecond());
+        loggerProperty.info("Broj nekretnina: {} | Vrijeme: {}", generic.getFirst(), generic.getSecond());
 
         propertyTypeComboBox.getSelectionModel().clearSelection();
         countyComboBox.getSelectionModel().clearSelection();

@@ -14,6 +14,8 @@ import static hr.javafx.realestate.javafxmanagementsystem.RealEsteteApplication.
 public class TenantRepositoryDatabase<T extends Tenant> extends AbstractRepositoryDatabase<T> {
 
 
+    private static final String ERROR_MESSAGE = "Pogreška pri spajaju na bazu.";
+
     @Override
     public T findById(Long id) {
         try(Connection conn = openConnection();
@@ -27,9 +29,9 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
             else{
                 throw new EmptyRepositoryResultException("Tenant with id " + id + " not found");
             }
-        } catch(IOException | SQLException e){
-            logger.error("Pogreška s pronalaskom id-a kod najmoprimca.");
-            throw new RepositoryAccessException(e.getMessage());
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
+            throw new RepositoryAccessException(e);
         }
     }
 
@@ -45,9 +47,9 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
             }
             return listTenant;
 
-        }catch(IOException | SQLException e){
-            logger.error("Pogreška kod čitanja najmoprimca iz baze.");
-            throw new RepositoryAccessException(e.getMessage());
+        }catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
+            throw new RepositoryAccessException(e);
         }
     }
     public T extractFromResultSet(ResultSet rs) throws SQLException {
@@ -71,12 +73,12 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
             stmt.setString(4, entity.getEmail());
             stmt.executeUpdate();
         } catch (SQLException | IOException e) {
-            logger.error("Pogreška kod spremanja najmoprimca.");
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
 
-    public T returnLast(){
+    public T returnLast() {
         try(Connection conn = openConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT tenant.id, tenant.first_name, " +
@@ -89,6 +91,7 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
                 throw new EmptyRepositoryResultException("Tenant database is empty");
             }
         } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }
@@ -102,8 +105,8 @@ public class TenantRepositoryDatabase<T extends Tenant> extends AbstractReposito
             updateTenant.setString(2, email);
             updateTenant.setLong(3, id);
             updateTenant.executeUpdate();
-        } catch(SQLException | IOException e) {
-            logger.error("Pogreška kod uređivanja ugovora.");
+        } catch (SQLException | IOException e) {
+            logger.error(ERROR_MESSAGE);
             throw new RepositoryAccessException(e);
         }
     }

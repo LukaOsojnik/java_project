@@ -12,7 +12,6 @@ public class Address extends Entity {
     private final String city;
     private final County county;
 
-    // Private constructor - instances can only be created through the Builder
     private Address(Builder builder) {
         super(builder.id);
         this.streetName = builder.streetName;
